@@ -145,7 +145,7 @@ function playSound(filename){
 function draw() {
     //draw both keypoints and the skeleton for testing purposes.
     drawKeyPoints();
-    drawSkeleton();
+    ////drawSkeleton();
 }
 
 function drawKeyPoints() {
@@ -153,8 +153,8 @@ function drawKeyPoints() {
         
     try {
         //make keypoints for the point between the shoulders
-        let midX = shoulderL.position.x + (shoulderR.position.x - shoulderL.position.x) * 0.50;
-        let midY = shoulderL.position.y + (shoulderR.position.y - shoulderL.position.y) * 0.50;
+        ////let midX = shoulderL.position.x + (shoulderR.position.x - shoulderL.position.x) * 0.50;
+        ////let midY = shoulderL.position.y + (shoulderR.position.y - shoulderL.position.y) * 0.50;
         
         //trying to check distance eyes
         let eyeR = pose.rightEye;
@@ -163,12 +163,12 @@ function drawKeyPoints() {
         
         //fill with color red and create ellipse to show the keypoints
         fill(255,0,0);
-        ellipse(midX, midY, 34);
+        ////ellipse(midX, midY, 34);
 
         //use d to check distance instead of fixed variable
         ellipse(pose.nose.x, pose.nose.y, d);
-        ellipse(pose.leftShoulder.x, pose.leftShoulder.y, 30);
-        ellipse(pose.rightShoulder.x, pose.rightShoulder.y, 30);
+        ////ellipse(pose.leftShoulder.x, pose.leftShoulder.y, 30);
+        /////ellipse(pose.rightShoulder.x, pose.rightShoulder.y, 30);
 
         console.log(d);
         console.log(leanCheck);
