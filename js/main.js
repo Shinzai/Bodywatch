@@ -25,7 +25,7 @@ let step = "starting_pose";
 function setup() {
     //create camera window and webcam usage.
     createCanvas(800, 600);
-    video = createCapture(VIDEO);    
+    video = createCapture(VIDEO);
     poseNet = ml5.poseNet(video);
     
     poseNet.on('pose', showPoses)
@@ -181,28 +181,28 @@ function drawKeyPoints() {
     }
 }
 
-function drawSkeleton() {
-    try {
-        //first 2 points in this array are the shoulders. 
-        let a = skeleton[0][0];
-        let b = skeleton[0][1];
-        
-        //put in global variable for drawKeyPoints
-        shoulderL = a;
-        shoulderR = b;
-        
-        //create middle keypoint for check later on
-        let midX = shoulderL.position.x + (shoulderR.position.x - shoulderL.position.x) * 0.50;
-        let midY = shoulderL.position.y + (shoulderR.position.y - shoulderL.position.y) * 0.50;
-        
-        strokeWeight(3);
-        stroke(255);
-        
-        //draw lines
-        line(a.position.x, a.position.y, b.position.x, b.position.y);  
-        line(pose.nose.x, pose.nose.y, midX, midY);
-    }
-    catch(err) {
-      //console.log("No pose found!");
-    }   
-}
+//function drawSkeleton() {
+//    try {
+//        //first 2 points in this array are the shoulders. 
+//        let a = skeleton[0][0];
+//        let b = skeleton[0][1];
+//        
+//        //put in global variable for drawKeyPoints
+//        shoulderL = a;
+//        shoulderR = b;
+//        
+//        //create middle keypoint for check later on
+//        let midX = shoulderL.position.x + (shoulderR.position.x - shoulderL.position.x) * 0.50;
+//        let midY = shoulderL.position.y + (shoulderR.position.y - shoulderL.position.y) * 0.50;
+//        
+//        strokeWeight(3);
+//        stroke(255);
+//        
+//        //draw lines
+//        line(a.position.x, a.position.y, b.position.x, b.position.y);  
+//        line(pose.nose.x, pose.nose.y, midX, midY);
+//    }
+//    catch(err) {
+//      //console.log("No pose found!");
+//    }   
+//}
