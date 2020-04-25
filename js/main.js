@@ -24,9 +24,9 @@ let step = "starting_pose";
 
 function setup() {
     //create camera window and webcam usage.
-    createCanvas(1024, 768);
+    createCanvas(800, 600);
     video = createCapture(VIDEO);    
-    poseNet = ml5.poseNet(video, modelReady);
+    poseNet = ml5.poseNet(video);
     
     poseNet.on('pose', showPoses)
     
@@ -52,11 +52,6 @@ function displayBadPose() {
     badD = d;
     console.log("bad D = " + badD);
     document.getElementById("bad").innerHTML = badD;
-}
-
-function modelReady() {
-    //check if model is loaded in.
-    console.log('Loaded');
 }
 
 //function to show notification split into mute/unmuted can remove one if we choose to let users mute via System
