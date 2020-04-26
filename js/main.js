@@ -10,6 +10,17 @@ let video;
 let poseNet;
 //let poses = [];
 let pose;
+let options = {
+    imageScaleFactor: 0.3,
+    outputStride: 16,
+    flipHorizontal: true,
+    minConfidence: 0.5,
+    maxPoseDetections: 5,
+    scoreThreshold: 0.5,
+    nmsRadius: 20,
+    detectionType: 'single',
+    multiplier: 0.75,
+}
 let skeleton;
 let shoulderL;
 let shoulderR;
@@ -24,13 +35,18 @@ let step = "starting_pose";
 
 function setup() {
     //create camera window and webcam usage.
-    createCanvas(1024, 768);
-    video = createCapture(VIDEO);    
-    poseNet = ml5.poseNet(video, modelReady);
+    createCanvas(800, 600);
+    video = createCapture(VIDEO);
+    // video.size(width, height);
+    poseNet = ml5.poseNet(video, check, options);
     
     poseNet.on('pose', showPoses)
     
     video.hide();
+}
+
+function check() {
+    console.log('check');
 }
 
 function showPoses(poses) {
