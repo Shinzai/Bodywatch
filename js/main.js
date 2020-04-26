@@ -11,15 +11,18 @@ let poseNet;
 //let poses = [];
 let pose;
 let options = {
+    architecture: 'MobileNetV1',
     imageScaleFactor: 0.3,
     outputStride: 16,
-    flipHorizontal: true,
+    flipHorizontal: false,
     minConfidence: 0.5,
-    maxPoseDetections: 5,
+    maxPoseDetections: 1,
     scoreThreshold: 0.5,
     nmsRadius: 20,
     detectionType: 'single',
-    multiplier: 0.75,
+    multiplier: 0.5,
+    quantBytes: 2,
+    inputResolution: 161,
 }
 let skeleton;
 let shoulderL;
@@ -38,7 +41,7 @@ function setup() {
     createCanvas(800, 600);
     video = createCapture(VIDEO);
     // video.size(width, height);
-    poseNet = ml5.poseNet(video, check, options);
+    poseNet = ml5.poseNet(video, options, check);
     
     poseNet.on('pose', showPoses)
     
