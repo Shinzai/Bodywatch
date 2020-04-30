@@ -230,3 +230,8 @@ function drawKeyPoints() {
 //      //console.log("No pose found!");
 //    }   
 //}
+
+function detectVoid() {
+    if ()
+    console.log("Nobody in the canvas");
+}
