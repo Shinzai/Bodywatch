@@ -58,6 +58,16 @@ function showPoses(poses) {
     if (poses.length > 0) {
         pose = poses[0].pose;
         skeleton = poses[0].skeleton;
+        const nose = pose.nose;
+        const leftShoulder = pose.leftShoulder;
+        const rightShoulder = pose.rightShoulder;
+        console.log("x"+nose.x);
+        console.log("y"+nose.y);
+        if (nose && nose.x && nose.y){
+            if (nose.x < 0 || nose.x > 1024){
+                console.log("nose x position is out of the image");
+            }
+         }
     }
 }
 
@@ -231,7 +241,7 @@ function drawKeyPoints() {
 //    }   
 //}
 
-function detectVoid() {
-    if ()
-    console.log("Nobody in the canvas");
-}
+//function detectVoid() {
+//    if ()
+//    console.log("Nobody in the canvas");
+//}
