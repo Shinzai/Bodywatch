@@ -239,8 +239,33 @@ function detectOutOfCanvas(){
     console.log("x"+nose.x);
     console.log("y"+nose.y);
     if (nose && nose.x && nose.y){
-        if (nose.x < 0 || nose.x > 1024){
+        if (nose.x < 0 || nose.x > 800){
             console.log("nose x position is out of the image");
+        }
+    }
+    if (nose && nose.x && nose.y){
+        if (nose.y < 0 || nose.y > 600){
+            console.log("nose y position is out of the image");
+        }
+    }
+    if (leftShoulder && leftShoulder.x && leftShoulder.y){
+        if (leftShoulder.y < 0 || leftShoulder.y > 600){
+            console.log("leftShoulder y position is out of the image");
+        }
+    }
+    if (leftShoulder && leftShoulder.x && leftShoulder.y){
+        if (leftShoulder.x < 0 || leftShoulder.x > 800){
+            console.log("leftShoulder x position is out of the image");
+        }
+    }
+    if (rightShoulder && rightShoulder.x && rightShoulder.y){
+        if (rightShoulder.x < 0 || rightShoulder.x > 800){
+            console.log("rightShoulder x position is out of the image");
+        }
+    }
+    if (rightShoulder && rightShoulder.x && rightShoulder.y){
+        if (rightShoulder.y < 0 || rightShoulder.y > 600){
+            console.log("rightShoulder y position is out of the image");
         }
     }
 }
