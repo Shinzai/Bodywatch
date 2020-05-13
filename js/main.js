@@ -93,7 +93,7 @@ function showNotificaton() {
     if (muteCheck == 'muted' && showPopup == 'true'){
         Push.create("Watch your pose", {
             body: "You are leaning forward too much",
-            icon: 'icon.png',
+            icon: 'img/icon.png',
             onClick: function () {
                 //puts leancheck back to 0 to signal the notification is clicked and is ready for a new one when needed  
                 leanCheck = 0;
@@ -106,7 +106,7 @@ function showNotificaton() {
         playSound('bing');
         Push.create("Watch your pose", {
             body: "You are leaning forward too much",
-            icon: 'icon.png',
+            icon: 'img/icon.png',
             onClick: function () {
                 //puts leancheck back to 0 to signal the notification is clicked and is ready for a new one when needed  
                 leanCheck = 0;
@@ -133,7 +133,7 @@ function randomNotifications() {
         function() {
             Push.create("Good job!", {
                 body: "Have a sticker, keep it up 1",
-                icon: 'sticker.png',
+                icon: 'img/sticker.png',
                 onClick: function () {
                     this.close();
                 }
@@ -144,7 +144,7 @@ function randomNotifications() {
             function() {
                 Push.create("Good job!", {
                     body: "Do not forget to do some stretches click here for a small routine",
-                    icon: 'stretch.png',
+                    icon: 'img/stretch.png',
                     onClick: function () {
                         testHyperlink();
                         this.close();
@@ -193,11 +193,11 @@ function tutorialSwitch() {
     var image = document.getElementById('myImage');
     var x = document.getElementById("tutorialText");
     if (image.src.match("correct_pose_test")) {
-        image.src = "worst_pose_test.png";
+        image.src = "img/worst_pose_test.png";
         x.innerHTML = "Take a seat and take the pose you find yourself in when you are focused on work and just dive into your laptop. This will be called the worst pose. (kunnen de slechtste pose aannemen en dan met stappen/levels notifications maken naar de slechtste pose toe ipv alleen maar beste en slechtste pose)";
     }
     else {
-        image.src = "correct_pose_test.png";
+        image.src = "img/correct_pose_test.png";
         x.innerHTML ="Take a seat and take a comfortable working pose when you have the correct pose click this is my best pose (hier kan nog een stap bij stap hoe een algemene goede pose eruit ziet en hoe je die aanneemt. Soort van 'algemene' handelingen die je kan doen zodat je met goede pose eindigt over het algemeen)";
     }
 }
@@ -258,7 +258,7 @@ function rewardGoodPose(){
         console.log("we detected no bad poses for x minutes check")
         Push.create("Keep it up", {
             body: "You had no bad poses for x minutes!",
-            icon: 'sticker.png',
+            icon: 'img/sticker.png',
             onClick: function () {
                 this.close();
             }
