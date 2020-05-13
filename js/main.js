@@ -34,7 +34,9 @@ let startingD;
 let badD;
 let leanCheck = 0;
 let muteCheck = 'unmuted'
+let showPopup = 'true'
 let step = "starting_pose";
+let reward_good_pose = 'true';
 
 function setup() {
     //create camera window and webcam usage.
@@ -46,6 +48,11 @@ function setup() {
     poseNet.on('pose', showPoses)
     
     video.hide();
+
+    //functies hier uitvoeren zorgt misschien voor beetje lag? weet niet zeker even testen 
+    //misschien probleem omdat hij hier ook de webcam opzet en functies hier uitvoeren kan voor vertraging zorgen of ligt aan me eigen laptop (lol)
+    randomNotifications();
+    checkGoodPose();
 }
 
 function check() {
@@ -81,9 +88,9 @@ function modelReady() {
 
 //function to show notification split into mute/unmuted can remove one if we choose to let users mute via System
 function showNotificaton() {
-    //leancheck is set to 1 to notify the rest there is a notification showing
+    //leancheck is set to 1 to notify the rest there is a notification showing so it will not spam notifications and crash the application
     leanCheck = 1;
-    if (muteCheck == 'muted'){
+    if (muteCheck == 'muted' && showPopup == 'true'){
         Push.create("Watch your pose", {
             body: "You are leaning forward too much",
             icon: 'icon.png',
@@ -93,8 +100,9 @@ function showNotificaton() {
                 this.close();
             }
         });
+        resetLeanCheck(); //gemaakt zodat gebruiker niet perse hoef te klikken om te 'resetten' maar dat het na x seconden gebeurt, zodat we advies blijven geven en geen applicatie worden die forced.
     } 
-    else{
+    else if (muteCheck == 'unmuted' && showPopup == 'true'){
         playSound('bing');
         Push.create("Watch your pose", {
             body: "You are leaning forward too much",
@@ -105,7 +113,55 @@ function showNotificaton() {
                 this.close();
             }
         });
+        resetLeanCheck();
     }
+    else if (muteCheck == 'muted' && showPopup == 'false') //kijken wat we hiermee gaan doen maybe wel voor data registreren want geen geluid en popup is eigenlijk niks
+    {
+        console.log("sound is muted and showPopup is false so nothing shows but it went of in the background!");
+        resetLeanCheck();
+    }
+    else if (muteCheck == 'unmuted' && showPopup == 'false')
+    {
+        playSound('bing');
+        resetLeanCheck();
+    }
+}
+
+//random berichten die we pushen dit zijn test teksten en test timers we moeten nog kijken naar de frequentie van de notificaties
+function randomNotifications() {
+    setTimeout(
+        function() {
+            Push.create("Good job!", {
+                body: "Have a sticker, keep it up 1",
+                icon: 'sticker.png',
+                onClick: function () {
+                    this.close();
+                }
+            });
+        }, 20000); 
+
+        setTimeout(
+            function() {
+                Push.create("Good job!", {
+                    body: "Do not forget to do some stretches click here for a small routine",
+                    icon: 'stretch.png',
+                    onClick: function () {
+                        testHyperlink();
+                        this.close();
+                    }
+                });
+            }, 30000);
+}
+
+function testHyperlink() {
+    window.open("https://www.youtube.com/watch?v=6lJBZCRlFnI");
+  }
+
+function resetLeanCheck() {
+    setTimeout(
+    function() {
+        leanCheck = 0;
+    }, 10000);
 }
 
 //function to mute/unmute sound can remove if we want people to just mute via System
@@ -120,6 +176,19 @@ function muteSwitch() {
     }
   }
 
+//function to mute/unmute sound can remove if we want people to just mute via System
+function popupSwitch() {
+    var x = document.getElementById("myPopup");
+    if (x.innerHTML === "true") {
+      x.innerHTML = "false";
+      showPopup = "false";
+    } else {
+      x.innerHTML = "true";
+      showPopup = "true";
+    }
+  }
+
+
 function tutorialSwitch() {
     var image = document.getElementById('myImage');
     var x = document.getElementById("tutorialText");
@@ -133,7 +202,7 @@ function tutorialSwitch() {
     }
 }
 
-//shows/hides menu so the screen will not get full with buttons
+//shows or hides menu so the screen will not get full with buttons
 function showMenu() {
     var x = document.getElementById("myMenu");
     if (x.style.display === "none") {
@@ -153,6 +222,57 @@ function showTutorial() {
         x.style.display = "none";
     }
 }
+
+//test code geschreven hoef NIET gebruikt te worden misschien in toekomst
+//dit checkt elke x seconden of er verandering is (in dit geval op variable d) 
+//dit kan in toekomst gebruikt worden als het nodig is eventueel voor nu geen behoefte 
+function checkChange(){
+    var someValue = d;
+    var prevVal = null;             
+    var _myInterval = setInterval(function() {
+        if(prevVal == someValue) {
+            console.log("No change for 2 second", someValue)
+            someValue = d;
+            //hier kan je iets uitvoeren als er 2 seconden niks veranderd is misschien reminder of timer 
+            //kunnen misschien in plaats van == het van elkaar aftrekken en met marges spelen want camera kan shaken door licht inval
+        } else {
+            console.log("Value was changed between past 2 second prev: ", prevVal, " New: ", someValue)
+            prevVal = someValue;
+            someValue = d;
+            //als values niet gelijk meer zijn dan veranderd de opgeslagen value in de nieuwe value maar 
+            //hij kijkt of values PRECIES hetzelfde zijn dus beter spelen met marges
+        }
+    }, 2000)
+}
+
+function checkGoodPose(){
+    setTimeout(
+        function() {
+            rewardGoodPose();
+        }, 60000); 
+}
+
+function rewardGoodPose(){
+    if (reward_good_pose == 'true')
+    {
+        console.log("we detected no bad poses for x minutes check")
+        Push.create("Keep it up", {
+            body: "You had no bad poses for x minutes!",
+            icon: 'sticker.png',
+            onClick: function () {
+                this.close();
+            }
+        });
+        checkGoodPose();
+    }
+    else {
+        console.log("we detected a bad pose in the x minutes check")
+        reward_good_pose = 'true';
+        clearInterval(checkGoodPose);
+        checkGoodPose();
+    }
+}
+
 
 //plays a sound when called
 function playSound(filename){
@@ -190,16 +310,18 @@ function drawKeyPoints() {
         ////ellipse(pose.leftShoulder.x, pose.leftShoulder.y, 30);
         /////ellipse(pose.rightShoulder.x, pose.rightShoulder.y, 30);
 
-        console.log(d);
-        console.log(leanCheck);
-        console.log(muteCheck);
+        // // console.log(d);
+        // // console.log(leanCheck);
+        // // console.log(muteCheck);
+        // // console.log("reward good pose " + reward_good_pose);
 
         //if leaning forward && no notification is showing then show notification 
         //otherwise the notification will loop and crash the browser/application
             if (d > startingD + (badD - startingD) && leanCheck == 0){
                 showNotificaton();
                 console.log("bad D");
-        } 
+                reward_good_pose = 'false';
+            } 
     }
     catch (err) {
        //console.log("No pose found!");
