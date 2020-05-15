@@ -64,15 +64,24 @@
                 <button type="button" onclick="displayBadPose()">This is my worst pose</button>
                 <p id="start">Checking for startPose..</p>
                 <p id="bad">Checking for badPose..</p>
-                <button onclick="muteSwitch()">Mute/Unmute</button>
+                <button onclick="muteSwitch()">Notification sound</button>
                 <div id="myMute">unmuted</div>
                 <br>
-                <button onclick="popupSwitch()">showNotification</button>
+                <button onclick="popupSwitch()">show Notification</button>
                 <div id="myPopup">true</div>
                 <br>
                 <a href="timer/timer_index.html">
                     <button>visit Break Countdown</button>
                 </a>
+                <br>
+                <p>How long between random notifications (think motiviation, tips and tricks) (in minutes)</p>
+                <input type="text" id="myFrequentTime" value="15">
+                <button type="button" onclick="myFrequentTime()">Enter</button>
+                <br>
+                <p>How long between good pose check (in minutes)</p>
+                <input type="text" id="myGoodPoseTime" value="60">
+                <button type="button" onclick="myGoodPoseTime()">Enter</button>
+                <br>
               </div>
               <div class="modal-footer">
                 <h3>Settings Footer</h3>
@@ -105,9 +114,10 @@
         window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
-        }
+            }
         }
         </script>      
+        <!-- dit moet ik even hier laten voor de settings popup -->
 
         <div id="sound"></div>
     </body>

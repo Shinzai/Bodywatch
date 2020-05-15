@@ -37,6 +37,9 @@ let muteCheck = 'unmuted'
 let showPopup = 'true'
 let step = "starting_pose";
 let reward_good_pose = 'true';
+let frequentTime = 0.25; //voor nu staat hij op 0.25 om te testen maar in productie zou hij bijvoorbeeld 15 staan voor elke kwartier een notification
+let goodPoseTime = 1; //voor nu staat hij op 1 om te testen maar in productie zou hij bijvoorbeeld elke uur kunnen aangeven of je fout heb gezeten
+
 
 function setup() {
     //create camera window and webcam usage.
@@ -138,7 +141,7 @@ function randomNotifications() {
                     this.close();
                 }
             });
-        }, 20000); 
+        }, frequentTime * 60 * 1000); 
 
         setTimeout(
             function() {
@@ -150,7 +153,7 @@ function randomNotifications() {
                         this.close();
                     }
                 });
-            }, 30000);
+            }, (frequentTime * 2) * 60 * 1000);
 }
 
 function testHyperlink() {
@@ -187,7 +190,6 @@ function popupSwitch() {
       showPopup = "true";
     }
   }
-
 
 function tutorialSwitch() {
     var image = document.getElementById('myImage');
@@ -249,7 +251,7 @@ function checkGoodPose(){
     setTimeout(
         function() {
             rewardGoodPose();
-        }, 60000); 
+        }, goodPoseTime * 60 * 1000); 
 }
 
 function rewardGoodPose(){
@@ -266,6 +268,7 @@ function rewardGoodPose(){
         checkGoodPose();
     }
     else {
+        //moet nog iets komen als er bad pose is
         console.log("we detected a bad pose in the x minutes check")
         reward_good_pose = 'true';
         clearInterval(checkGoodPose);
@@ -273,6 +276,18 @@ function rewardGoodPose(){
     }
 }
 
+function myFrequentTime() {
+    var x = document.getElementById("myFrequentTime");
+    frequentTime = x.value;
+    clearInterval(randomNotifications); //reset timer voor randomNotifications zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    randomNotifications();
+}
+
+function myGoodPoseTime() {
+    var x = document.getElementById("myGoodPoseTime");
+    goodPoseTime = x.value;
+    clearInterval(checkGoodPose); //reset timer voor randomNotifications zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+}
 
 //plays a sound when called
 function playSound(filename){
@@ -314,6 +329,8 @@ function drawKeyPoints() {
         // // console.log(leanCheck);
         // // console.log(muteCheck);
         // // console.log("reward good pose " + reward_good_pose);
+        // // console.log(frequentTime);
+        // // console.log(goodPoseTime);
 
         //if leaning forward && no notification is showing then show notification 
         //otherwise the notification will loop and crash the browser/application
