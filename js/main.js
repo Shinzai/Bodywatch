@@ -37,6 +37,9 @@ let muteCheck = 'unmuted'
 let showPopup = 'true'
 let step = "starting_pose";
 let reward_good_pose = 'true';
+let frequentTime = 0.25; //voor nu staat hij op 0.25 om te testen maar in productie zou hij bijvoorbeeld 15 staan voor elke kwartier een notification
+let goodPoseTime = 1; //voor nu staat hij op 1 om te testen maar in productie zou hij bijvoorbeeld elke uur kunnen aangeven of je fout heb gezeten
+
 
 function setup() {
     //create camera window and webcam usage.
@@ -93,7 +96,7 @@ function showNotificaton() {
     if (muteCheck == 'muted' && showPopup == 'true'){
         Push.create("Watch your pose", {
             body: "You are leaning forward too much",
-            icon: 'icon.png',
+            icon: 'img/icon.png',
             onClick: function () {
                 //puts leancheck back to 0 to signal the notification is clicked and is ready for a new one when needed  
                 leanCheck = 0;
@@ -106,7 +109,7 @@ function showNotificaton() {
         playSound('bing');
         Push.create("Watch your pose", {
             body: "You are leaning forward too much",
-            icon: 'icon.png',
+            icon: 'img/icon.png',
             onClick: function () {
                 //puts leancheck back to 0 to signal the notification is clicked and is ready for a new one when needed  
                 leanCheck = 0;
@@ -133,24 +136,24 @@ function randomNotifications() {
         function() {
             Push.create("Good job!", {
                 body: "Have a sticker, keep it up 1",
-                icon: 'sticker.png',
+                icon: 'img/sticker.png',
                 onClick: function () {
                     this.close();
                 }
             });
-        }, 20000); 
+        }, frequentTime * 60 * 1000); 
 
         setTimeout(
             function() {
                 Push.create("Good job!", {
                     body: "Do not forget to do some stretches click here for a small routine",
-                    icon: 'stretch.png',
+                    icon: 'img/stretch.png',
                     onClick: function () {
                         testHyperlink();
                         this.close();
                     }
                 });
-            }, 30000);
+            }, (frequentTime * 2) * 60 * 1000);
 }
 
 function testHyperlink() {
@@ -188,16 +191,15 @@ function popupSwitch() {
     }
   }
 
-
 function tutorialSwitch() {
     var image = document.getElementById('myImage');
     var x = document.getElementById("tutorialText");
     if (image.src.match("correct_pose_test")) {
-        image.src = "worst_pose_test.png";
+        image.src = "img/worst_pose_test.png";
         x.innerHTML = "Take a seat and take the pose you find yourself in when you are focused on work and just dive into your laptop. This will be called the worst pose. (kunnen de slechtste pose aannemen en dan met stappen/levels notifications maken naar de slechtste pose toe ipv alleen maar beste en slechtste pose)";
     }
     else {
-        image.src = "correct_pose_test.png";
+        image.src = "img/correct_pose_test.png";
         x.innerHTML ="Take a seat and take a comfortable working pose when you have the correct pose click this is my best pose (hier kan nog een stap bij stap hoe een algemene goede pose eruit ziet en hoe je die aanneemt. Soort van 'algemene' handelingen die je kan doen zodat je met goede pose eindigt over het algemeen)";
     }
 }
@@ -249,7 +251,7 @@ function checkGoodPose(){
     setTimeout(
         function() {
             rewardGoodPose();
-        }, 60000); 
+        }, goodPoseTime * 60 * 1000); 
 }
 
 function rewardGoodPose(){
@@ -258,7 +260,7 @@ function rewardGoodPose(){
         console.log("we detected no bad poses for x minutes check")
         Push.create("Keep it up", {
             body: "You had no bad poses for x minutes!",
-            icon: 'sticker.png',
+            icon: 'img/sticker.png',
             onClick: function () {
                 this.close();
             }
@@ -266,6 +268,7 @@ function rewardGoodPose(){
         checkGoodPose();
     }
     else {
+        //moet nog iets komen als er bad pose is
         console.log("we detected a bad pose in the x minutes check")
         reward_good_pose = 'true';
         clearInterval(checkGoodPose);
@@ -273,6 +276,18 @@ function rewardGoodPose(){
     }
 }
 
+function myFrequentTime() {
+    var x = document.getElementById("myFrequentTime");
+    frequentTime = x.value;
+    clearInterval(randomNotifications); //reset timer voor randomNotifications zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    randomNotifications();
+}
+
+function myGoodPoseTime() {
+    var x = document.getElementById("myGoodPoseTime");
+    goodPoseTime = x.value;
+    clearInterval(checkGoodPose); //reset timer voor randomNotifications zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+}
 
 //plays a sound when called
 function playSound(filename){
@@ -314,6 +329,8 @@ function drawKeyPoints() {
         // // console.log(leanCheck);
         // // console.log(muteCheck);
         // // console.log("reward good pose " + reward_good_pose);
+        // // console.log(frequentTime);
+        // // console.log(goodPoseTime);
 
         //if leaning forward && no notification is showing then show notification 
         //otherwise the notification will loop and crash the browser/application
