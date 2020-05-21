@@ -1,11 +1,3 @@
-window.onload = () => {
-    'use strict';
-    
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js');
-    }
-}
-
 let video;
 let poseNet;
 //let poses = [];
@@ -312,17 +304,12 @@ function playSound(filename){
 function draw() {
     //draw both keypoints and the skeleton for testing purposes.
     drawKeyPoints();
-    ////drawSkeleton();
 }
 
 function drawKeyPoints() {
     image(video, 0, 0);
         
-    try {
-        //make keypoints for the point between the shoulders
-        ////let midX = shoulderL.position.x + (shoulderR.position.x - shoulderL.position.x) * 0.50;
-        ////let midY = shoulderL.position.y + (shoulderR.position.y - shoulderL.position.y) * 0.50;
-        
+    try {        
         //trying to check distance eyes
         let eyeR = pose.rightEye;
         let eyeL = pose.leftEye;
@@ -330,19 +317,9 @@ function drawKeyPoints() {
         
         //fill with color red and create ellipse to show the keypoints
         fill(255,0,0);
-        ////ellipse(midX, midY, 34);
 
         //use d to check distance instead of fixed variable
-        ellipse(pose.nose.x, pose.nose.y, d);
-        ////ellipse(pose.leftShoulder.x, pose.leftShoulder.y, 30);
-        /////ellipse(pose.rightShoulder.x, pose.rightShoulder.y, 30);
-
-        // // console.log(d);
-        // // console.log(leanCheck);
-        // // console.log(muteCheck);
-        // // console.log("reward good pose " + reward_good_pose);
-        // // console.log(frequentTime);
-        // // console.log(goodPoseTime);
+        ellipse(pose.nose.x, pose.nose.y, d);       
 
         //if leaning forward && no notification is showing then show notification 
         //otherwise the notification will loop and crash the browser/application
@@ -356,32 +333,6 @@ function drawKeyPoints() {
        //console.log("No pose found!");
     }
 }
-
-//function drawSkeleton() {
-//    try {
-//        //first 2 points in this array are the shoulders. 
-//        let a = skeleton[0][0];
-//        let b = skeleton[0][1];
-//        
-//        //put in global variable for drawKeyPoints
-//        shoulderL = a;
-//        shoulderR = b;
-//        
-//        //create middle keypoint for check later on
-//        let midX = shoulderL.position.x + (shoulderR.position.x - shoulderL.position.x) * 0.50;
-//        let midY = shoulderL.position.y + (shoulderR.position.y - shoulderL.position.y) * 0.50;
-//        
-//        strokeWeight(3);
-//        stroke(255);
-//        
-//        //draw lines
-//        line(a.position.x, a.position.y, b.position.x, b.position.y);  
-//        line(pose.nose.x, pose.nose.y, midX, midY);
-//    }
-//    catch(err) {
-//      //console.log("No pose found!");
-//    }   
-//}
 
 function personNotFound() {
     if (used == false) {
@@ -405,38 +356,10 @@ function detectOutOfCanvas(){
     const nose = pose.nose;
     const leftShoulder = pose.leftShoulder;
     const rightShoulder = pose.rightShoulder;
-    // console.log("x"+nose.x);
-    // console.log("y"+nose.y);
+
     if (nose && nose.x && nose.y){
         if (nose.x < 0 || nose.x >= 640){
             personNotFound();
-            
-            // console.log("nose x position is out of the image");
         }
     }
-    // if (nose && nose.x && nose.y){
-    //     if (nose.y < 0 || nose.y >= 480){
-    //         console.log("nose y position is out of the image");
-    //     }
-    // }
-    // if (leftShoulder && leftShoulder.x && leftShoulder.y){
-    //     if (leftShoulder.y < 0 || leftShoulder.y >= 480){
-    //         console.log("leftShoulder y position is out of the image");
-    //     }
-    // }
-    // if (leftShoulder && leftShoulder.x && leftShoulder.y){
-    //     if (leftShoulder.x < 0 || leftShoulder.x >= 640){
-    //         console.log("leftShoulder x position is out of the image");
-    //     }
-    // }
-    // if (rightShoulder && rightShoulder.x && rightShoulder.y){
-    //     if (rightShoulder.x < 0 || rightShoulder.x >= 640){
-    //         console.log("rightShoulder x position is out of the image");
-    //     }
-    // }
-    // if (rightShoulder && rightShoulder.x && rightShoulder.y){
-    //     if (rightShoulder.y < 0 || rightShoulder.y >= 480){
-    //         console.log("rightShoulder y position is out of the image");
-    //     }
-    // }
 }
