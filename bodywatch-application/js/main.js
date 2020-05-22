@@ -30,6 +30,7 @@ let step = "starting_pose";
 let reward_good_pose = 'true';
 let frequentTime = 15; //voor nu staat hij op 0.25 om te testen maar in productie zou hij bijvoorbeeld 15 staan voor elke kwartier een notification
 let goodPoseTime = 1; //voor nu staat hij op 1 om te testen maar in productie zou hij bijvoorbeeld elke uur kunnen aangeven of je fout heb gezeten
+let tipsTime = 1;
 let badpose_per_session = [];
 let badposeCounter_per_session = 0;
 let used = false;
@@ -130,29 +131,19 @@ function showNotificaton() {
 }
 
 //random berichten die we pushen dit zijn test teksten en test timers we moeten nog kijken naar de frequentie van de notificaties
+//denk hierbij aan links en belangrijke 'break' reminders 
 function randomNotifications() {
     setTimeout(
         function() {
             Push.create("Good job!", {
-                body: "Have a sticker, keep it up 1",
-                icon: 'img/sticker.png',
+                body: "Do not forget to do some stretches click here for a small routine",
+                icon: 'img/stretch.png',
                 onClick: function () {
+                    testHyperlink();
                     this.close();
                 }
             });
         }, frequentTime * 60 * 1000); 
-
-        setTimeout(
-            function() {
-                Push.create("Good job!", {
-                    body: "Do not forget to do some stretches click here for a small routine",
-                    icon: 'img/stretch.png',
-                    onClick: function () {
-                        testHyperlink();
-                        this.close();
-                    }
-                });
-            }, (frequentTime * 1.5) * 60 * 1000);
 
         setTimeout(
             function() {
@@ -164,8 +155,11 @@ function randomNotifications() {
                         this.close();
                     }
                 });
-            }, ((frequentTime * 3) * 60 * 1000)
+            }, ((frequentTime * 2) * 60 * 1000)
         );
+        //in de laatste misschien de functie opnieuw oproepen voor een loop
+        // randomNotifications();
+
 }
 
 function testHyperlink() {
@@ -178,7 +172,7 @@ function resetLeanCheck() {
     function() {
         leanCheck = 0;
         changeColorToGood();
-    }, 10000);
+    }, 20000);
 }
 
 //function to mute/unmute sound can remove if we want people to just mute via System
@@ -237,17 +231,17 @@ function testing_save() {
     ///goodposecheck
     var goodposetimer = document.getElementById("myGoodPoseTime").value;
     /// startPose
-    //var startpositie = document.getElementById("start").innerHTML;
+    var startpositie = document.getElementById("start").innerHTML;
     /// badPose
-    //var badpositie = document.getElementById("bad").innerHTML;
+    var badpositie = document.getElementById("bad").innerHTML;
 
     //Set
     localStorage.setItem("sound", sound);
     localStorage.setItem("notification", notification);
     localStorage.setItem("frequenttimer", frequenttimer);
     localStorage.setItem("goodposetimer", goodposetimer);
-    //localStorage.setItem("startpositie", startpositie);
-    //localStorage.setItem("badpositie", badpositie);
+    localStorage.setItem("startpositie", startpositie);
+    localStorage.setItem("badpositie", badpositie);
 } 
 
 //functie om alle bewaarde values te loaden
@@ -257,13 +251,13 @@ function testing_load(){
     document.getElementById("myPopup").innerHTML = localStorage.getItem("notification");
     document.getElementById("myFrequentTime").value = localStorage.getItem("frequenttimer");
     document.getElementById("myGoodPoseTime").value = localStorage.getItem("goodposetimer");
-    //document.getElementById("start").innerHTML = localStorage.getItem("startpositie");
-    //document.getElementById("bad").innerHTML = localStorage.getItem("badpositie");
+    document.getElementById("start").innerHTML = localStorage.getItem("startpositie");
+    document.getElementById("bad").innerHTML = localStorage.getItem("badpositie");
 
     muteCheck = localStorage.getItem("sound");
     showPopup = localStorage.getItem("notification");
-    //badD = localStorage.getItem("badpositie");
-    //startingD = localStorage.getItem("startpositie");
+    badD = Number(localStorage.getItem("badpositie"));
+    startingD = Number(localStorage.getItem("startpositie"))
     frequentTime = localStorage.getItem("frequenttimer");        
     goodPoseTime = localStorage.getItem("goodposetimer");
 }
@@ -304,27 +298,30 @@ function changeColorToGood() {
 }
 
 //met deze functie vullen we de tips veld op het scherm met tips / motivatie
+//denk aan tips, motivatie die mensen zien als ze op de page zelf zijn niet perse belangrijke dingen
 function randomTips(){
     var textField = document.getElementById("tipsText");
     setTimeout(
         function() {
             textField.innerHTML = "Tip 1"
-        }, 0.5 * 60 * 1000); //staat nu op een halve minuut moeten voor echte productie tijd nog aanpassen misschien settings optie voor gebruiker?? net als frequente notificatie
+        }, tipsTime * 60 * 1000); //staat nu op een halve minuut moeten voor echte productie tijd nog aanpassen misschien settings optie voor gebruiker?? net als frequente notificatie
 
     setTimeout(
         function() {
             textField.innerHTML = "Tip 2"
-        }, 1 * 60 * 1000); //staat op 1 minuut
+        }, (tipsTime * 2) * 60 * 1000); //staat op 1 minuut
     
     setTimeout(
         function() {
             textField.innerHTML = "Tip 3"
-        }, 1.5 * 60 * 1000); //staat op anderhalf minuut
+        }, (tipsTime * 3) * 60 * 1000); //staat op anderhalf minuut
 
     setTimeout(
         function() {
             textField.innerHTML = "Tip 4"
-        }, 2.0 * 60 * 1000); //staat op anderhalf minuut
+        }, (tipsTime * 4) * 60 * 1000); //staat op anderhalf minuut
+        //misschien bij de laatste call de functie opnieuw aanroepen voor een loop
+        // randomTips();
 }
 
 //functie zodat om de x minuten word gecheckt of de gebruiker in die tijd een foute pose heeft gehad
@@ -339,9 +336,8 @@ function checkGoodPose(){
 function rewardGoodPose(){
     if (reward_good_pose == 'true')
     {
-        console.log("We detected no bad poses for a period")
-        Push.create("Keep it up!", {
-            body: "You had no bad poses the past period!",
+        Push.create("Keep it up", {
+            body: "You had no bad poses for " + goodPoseTime + " minutes!",
             icon: 'img/sticker.png',
             onClick: function () {
                 this.close();
@@ -350,10 +346,15 @@ function rewardGoodPose(){
         checkGoodPose();
     }
     else {
-        //moet nog iets komen als er bad pose is
-        console.log("we detected a bad pose in the x minutes check")
+        Push.create("Dont give up", {
+            body: "You had a bad poses in the last " + goodPoseTime + " minutes!",
+            icon: 'img/hanginthere.png',
+            onClick: function () {
+                this.close();
+            }
+        });
         reward_good_pose = 'true';
-        clearInterval(checkGoodPose);
+        clearTimeout(checkGoodPose);
         checkGoodPose();
     }
 }
@@ -361,17 +362,27 @@ function rewardGoodPose(){
 //functie om de gebruiker de frequente notificaties timer aan te passen
 function myFrequentTime() {
     var x = document.getElementById("myFrequentTime");
-    frequentTime = x.value;
-    clearInterval(randomNotifications); //reset timer voor randomNotifications zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    frequentTime = Number(x.value);
+    clearTimeout(randomNotifications); //reset timer voor randomNotifications zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
     randomNotifications();
 }
 
 //functie om de gebruiker de good pose detection timer aan te passsen 
 function myGoodPoseTime() {
     var x = document.getElementById("myGoodPoseTime");
-    goodPoseTime = x.value;
-    clearInterval(checkGoodPose); //reset timer voor checkGoodPose zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    goodPoseTime = Number(x.value);
+    clearTimeout(checkGoodPose); //reset timer voor checkGoodPose zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    checkGoodPose();
 }
+
+//functie om de gebruiker de good pose detection timer aan te passsen 
+function myTipsTime() {
+    var x = document.getElementById("myTipsTime");
+    tipsTime = Number(x.value);
+    clearTimeout(randomTips); //reset timer voor tipsTime zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    randomTips();
+}
+
 
 //plays a sound when called
 function playSound(filename){
@@ -409,6 +420,7 @@ function drawKeyPoints() {
                 reward_good_pose = 'false';
 
                 recordBadPose();
+                printBadSession();
                 badposeCounter_per_session += 1;
 
                 changeColorToBad();
