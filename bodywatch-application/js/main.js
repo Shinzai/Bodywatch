@@ -177,7 +177,7 @@ function resetLeanCheck() {
     function() {
         leanCheck = 0;
         changeColorToGood();
-    }, 10000);
+    }, 20000);
 }
 
 //function to mute/unmute sound can remove if we want people to just mute via System
@@ -338,9 +338,8 @@ function checkGoodPose(){
 function rewardGoodPose(){
     if (reward_good_pose == 'true')
     {
-        console.log("we detected no bad poses for x minutes check")
         Push.create("Keep it up", {
-            body: "You had no bad poses for x minutes!",
+            body: "You had no bad poses for " + goodPoseTime + " minutes!",
             icon: 'img/sticker.png',
             onClick: function () {
                 this.close();
@@ -349,8 +348,13 @@ function rewardGoodPose(){
         checkGoodPose();
     }
     else {
-        //moet nog iets komen als er bad pose is
-        console.log("we detected a bad pose in the x minutes check")
+        Push.create("Dont give up", {
+            body: "You had a bad poses in the last " + goodPoseTime + " minutes!",
+            icon: 'img/hanginthere.png',
+            onClick: function () {
+                this.close();
+            }
+        });
         reward_good_pose = 'true';
         clearInterval(checkGoodPose);
         checkGoodPose();
