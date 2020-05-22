@@ -236,17 +236,17 @@ function testing_save() {
     ///goodposecheck
     var goodposetimer = document.getElementById("myGoodPoseTime").value;
     /// startPose
-    //var startpositie = document.getElementById("start").innerHTML;
+    var startpositie = document.getElementById("start").innerHTML;
     /// badPose
-    //var badpositie = document.getElementById("bad").innerHTML;
+    var badpositie = document.getElementById("bad").innerHTML;
 
     //Set
     localStorage.setItem("sound", sound);
     localStorage.setItem("notification", notification);
     localStorage.setItem("frequenttimer", frequenttimer);
     localStorage.setItem("goodposetimer", goodposetimer);
-    //localStorage.setItem("startpositie", startpositie);
-    //localStorage.setItem("badpositie", badpositie);
+    localStorage.setItem("startpositie", startpositie);
+    localStorage.setItem("badpositie", badpositie);
 } 
 
 //functie om alle bewaarde values te loaden
@@ -256,13 +256,13 @@ function testing_load(){
     document.getElementById("myPopup").innerHTML = localStorage.getItem("notification");
     document.getElementById("myFrequentTime").value = localStorage.getItem("frequenttimer");
     document.getElementById("myGoodPoseTime").value = localStorage.getItem("goodposetimer");
-    //document.getElementById("start").innerHTML = localStorage.getItem("startpositie");
-    //document.getElementById("bad").innerHTML = localStorage.getItem("badpositie");
+    document.getElementById("start").innerHTML = localStorage.getItem("startpositie");
+    document.getElementById("bad").innerHTML = localStorage.getItem("badpositie");
 
     muteCheck = localStorage.getItem("sound");
     showPopup = localStorage.getItem("notification");
-    //badD = localStorage.getItem("badpositie");
-    //startingD = localStorage.getItem("startpositie");
+    badD = Number(localStorage.getItem("badpositie"));
+    startingD = Number(localStorage.getItem("startpositie"))
     frequentTime = localStorage.getItem("frequenttimer");        
     goodPoseTime = localStorage.getItem("goodposetimer");
 }
@@ -412,6 +412,7 @@ function drawKeyPoints() {
                 reward_good_pose = 'false';
 
                 recordBadPose();
+                printBadSession();
                 badposeCounter_per_session += 1;
 
                 changeColorToBad();

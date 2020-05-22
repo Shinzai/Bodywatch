@@ -204,6 +204,7 @@ body {
     padding-top: 4px;
     position: absolute;
     text-align: center;
+    overflow: auto;
     left: 0%;
     top: 7%;
     width: 100%;
