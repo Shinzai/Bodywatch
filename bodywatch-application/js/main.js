@@ -28,7 +28,7 @@ let muteCheck = 'unmuted'
 let showPopup = 'true'
 let step = "starting_pose";
 let reward_good_pose = 'true';
-let frequentTime = 0.25; //voor nu staat hij op 0.25 om te testen maar in productie zou hij bijvoorbeeld 15 staan voor elke kwartier een notification
+let frequentTime = 15; //voor nu staat hij op 0.25 om te testen maar in productie zou hij bijvoorbeeld 15 staan voor elke kwartier een notification
 let goodPoseTime = 1; //voor nu staat hij op 1 om te testen maar in productie zou hij bijvoorbeeld elke uur kunnen aangeven of je fout heb gezeten
 let badpose_per_session = [];
 let badposeCounter_per_session = 0;
@@ -152,12 +152,13 @@ function randomNotifications() {
                         this.close();
                     }
                 });
-            }, (frequentTime * 2) * 60 * 1000);
+            }, (frequentTime * 1.5) * 60 * 1000);
 
         setTimeout(
             function() {
                 Push.create('Time for a break!', {
-                    body: "Click on this notification to take a break. x minutes have passed.",
+                    body: "Click on this notification to take a break. 45 minutes have passed.",
+                    icon: 'img/breaktime.png',
                     onClick: function () {
                         window.location.href = "./timer/timer_index.html"
                         this.close();
@@ -338,9 +339,9 @@ function checkGoodPose(){
 function rewardGoodPose(){
     if (reward_good_pose == 'true')
     {
-        console.log("we detected no bad poses for x minutes check")
-        Push.create("Keep it up", {
-            body: "You had no bad poses for x minutes!",
+        console.log("We detected no bad poses for a period")
+        Push.create("Keep it up!", {
+            body: "You had no bad poses the past period!",
             icon: 'img/sticker.png',
             onClick: function () {
                 this.close();
@@ -395,10 +396,10 @@ function drawKeyPoints() {
         d = dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
         
         //fill with color red and create ellipse to show the keypoints
-        fill(255,0,0);
+        // fill(255,0,0);
 
         //use d to check distance instead of fixed variable
-        ellipse(pose.nose.x, pose.nose.y, d);
+        // ellipse(pose.nose.x, pose.nose.y, d);
 
         //if leaning forward && no notification is showing then show notification 
         //otherwise the notification will loop and crash the browser/application
