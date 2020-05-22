@@ -70,14 +70,14 @@ function showPoses(poses) {
 //dit zet de 'goede' pose van de gebruiker vast zodat er gekeken word of de persoon goed zit
 function displayStartPose() {
     startingD = d;
-    console.log("starting D = " + startingD);
+    // console.log("starting D = " + startingD);
     document.getElementById("start").innerHTML = startingD;
 }
 
 //dit zet de 'bad' pose aan de positie waar je je niet in wilt bevinden
 function displayBadPose() {
     badD = d;
-    console.log("bad D = " + badD);
+    // console.log("bad D = " + badD);
     document.getElementById("bad").innerHTML = badD;
 }
 
@@ -404,7 +404,7 @@ function drawKeyPoints() {
         //otherwise the notification will loop and crash the browser/application
             if (d > startingD + (badD - startingD) && leanCheck == 0){
                 showNotificaton();
-                console.log("bad D");
+                // console.log("bad D");
                 reward_good_pose = 'false';
 
                 recordBadPose();
