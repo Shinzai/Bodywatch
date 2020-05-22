@@ -46,6 +46,7 @@ function setup() {
     //create camera window and webcam usage.
     var test = createCanvas(800, 600);
     test.parent('canvasPosition'); //dit koppelt het aan een div in html 
+    test.position(400,120); //relocate canvas
     video = createCapture(VIDEO);
     // video.size(width, height);
     poseNet = ml5.poseNet(video, options, check);
@@ -59,8 +60,8 @@ function setup() {
     //functies hier uitvoeren zorgt misschien voor beetje lag? weet niet zeker even testen 
     //misschien probleem omdat hij hier ook de webcam opzet en functies hier uitvoeren kan voor vertraging zorgen of ligt aan me eigen laptop (lol)
     randomNotifications();
-    checkGoodPose();
-    randomTips();
+    checkGoodPose(); //start de check voor goede pose functie (kan dit maybe uitschakelen als default en in optie aan laten zetten)
+    randomTips(); //start de random notifications (kan dit maybe uitzetten als default)
 }
 
 function check() {
@@ -77,12 +78,14 @@ function showPoses(poses) {
     }
 }
 
+//dit zet de 'goede' pose van de gebruiker vast zodat er gekeken word of de persoon goed zit
 function displayStartPose() {
     startingD = d;
     console.log("starting D = " + startingD);
     document.getElementById("start").innerHTML = startingD;
 }
 
+//dit zet de 'bad' pose aan de positie waar je je niet in wilt bevinden
 function displayBadPose() {
     badD = d;
     console.log("bad D = " + badD);
@@ -165,8 +168,9 @@ function randomNotifications() {
 
 function testHyperlink() {
     window.open("https://www.youtube.com/watch?v=6lJBZCRlFnI");
-  }
+}
 
+//functie om de leancheck die normaal word uitgevoerd door te klikken op popup te automatiseren dit gaat na 10sec terug
 function resetLeanCheck() {
     setTimeout(
     function() {
@@ -185,7 +189,7 @@ function muteSwitch() {
       x.innerHTML = "unmuted";
       muteCheck = "unmuted";
     }
-  }
+}
 
 //function to mute/unmute sound can remove if we want people to just mute via System
 function popupSwitch() {
@@ -196,19 +200,6 @@ function popupSwitch() {
     } else {
       x.innerHTML = "true";
       showPopup = "true";
-    }
-  }
-
-function tutorialSwitch() {
-    var image = document.getElementById('myImage');
-    var x = document.getElementById("tutorialText");
-    if (image.src.match("correct_pose_test")) {
-        image.src = "img/worst_pose_test.png";
-        x.innerHTML = "Take a seat and take the pose you find yourself in when you are focused on work and just dive into your laptop. This will be called the worst pose. (kunnen de slechtste pose aannemen en dan met stappen/levels notifications maken naar de slechtste pose toe ipv alleen maar beste en slechtste pose)";
-    }
-    else {
-        image.src = "img/correct_pose_test.png";
-        x.innerHTML ="Take a seat and take a comfortable working pose when you have the correct pose click this is my best pose (hier kan nog een stap bij stap hoe een algemene goede pose eruit ziet en hoe je die aanneemt. Soort van 'algemene' handelingen die je kan doen zodat je met goede pose eindigt over het algemeen)";
     }
 }
 
@@ -233,8 +224,8 @@ function showTutorial() {
     }
 }
 
+//functie om alle 'field' bij settings op te slaan zodat ze voor volgende gebruik kunnen worden gebruikt.
 function testing_save() { 
-
     ////sound 
     var sound = document.getElementById("myMute").innerHTML;
     ////notification
@@ -256,6 +247,8 @@ function testing_save() {
     //localStorage.setItem("startpositie", startpositie);
     //localStorage.setItem("badpositie", badpositie);
 } 
+
+//functie om alle bewaarde values te loaden
 function testing_load(){
      //Retrieve
     document.getElementById("myMute").innerHTML = localStorage.getItem("sound");
@@ -273,12 +266,14 @@ function testing_load(){
     goodPoseTime = localStorage.getItem("goodposetimer");
 }
 
+//functie om de tijd op te slaan wanneer een slechte pose word aangegeven dit word in een array gestopt
 function recordBadPose() {
     var time = new Date();
     var timeconverted = time.toUTCString(); //toLocaleTimeString voor alleen tijd
-    badpose_per_session.unshift(timeconverted);
+    badpose_per_session.unshift(timeconverted); //unshift en geen push zodat nieuwste boven te zien is
 }
 
+//print de array op het scherm (nieuwste komt boven)
 function printBadSession(){
     for (let index = 0; index < badpose_per_session.length; index++) {
         console.log(badpose_per_session[index]);
@@ -352,6 +347,7 @@ function checkChange(){
     }, 2000)
 }
 
+//functie zodat om de x minuten word gecheckt of de gebruiker in die tijd een foute pose heeft gehad
 function checkGoodPose(){
     setTimeout(
         function() {
@@ -359,6 +355,7 @@ function checkGoodPose(){
         }, goodPoseTime * 60 * 1000); 
 }
 
+//functie om te kijken of de gebruiker een 'reward' krijgt of niet. 
 function rewardGoodPose(){
     if (reward_good_pose == 'true')
     {
@@ -381,6 +378,7 @@ function rewardGoodPose(){
     }
 }
 
+//functie om de gebruiker de frequente notificaties timer aan te passen
 function myFrequentTime() {
     var x = document.getElementById("myFrequentTime");
     frequentTime = x.value;
@@ -388,10 +386,11 @@ function myFrequentTime() {
     randomNotifications();
 }
 
+//functie om de gebruiker de good pose detection timer aan te passsen 
 function myGoodPoseTime() {
     var x = document.getElementById("myGoodPoseTime");
     goodPoseTime = x.value;
-    clearInterval(checkGoodPose); //reset timer voor randomNotifications zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    clearInterval(checkGoodPose); //reset timer voor checkGoodPose zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
 }
 
 //plays a sound when called
