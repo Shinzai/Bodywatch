@@ -1,4 +1,4 @@
 # Bodywatch
 Application that checks your pose and gives notifications when the users pose is off
 
-Project B Sogeti
+Live demo: https://www.project-bodywatch.nl
