@@ -28,8 +28,8 @@ let muteCheck = 'unmuted'
 let showPopup = 'true'
 let step = "starting_pose";
 let reward_good_pose = 'true';
-let frequentTime = 15; //voor nu staat hij op 0.25 om te testen maar in productie zou hij bijvoorbeeld 15 staan voor elke kwartier een notification
-let goodPoseTime = 1; //voor nu staat hij op 1 om te testen maar in productie zou hij bijvoorbeeld elke uur kunnen aangeven of je fout heb gezeten
+let frequentTime = 15;
+let goodPoseTime = 1;
 let tipsTime = 1;
 let badpose_per_session = [];
 let badposeCounter_per_session = 0;
@@ -37,32 +37,30 @@ let used = false;
 
 function setup() {
     //create camera window and webcam usage.
-    var test = createCanvas(640, 480);
-
-    test.parent('canvasPosition'); //dit koppelt het aan een div in html 
-    test.position(0,0); //relocate canvas
+    var canvas = createCanvas(640, 480);
+    //connects to the div canvasPosition. 
+    canvas.parent('canvasPosition'); 
+    //relocate canvas
+    canvas.position(0,0);
 
     video = createCapture(VIDEO);
-    // video.size(width, height);
     poseNet = ml5.poseNet(video, options, check);
     
     poseNet.on('pose', showPoses)
     video.hide();
 
-    //functies hier uitvoeren zorgt misschien voor beetje lag? weet niet zeker even testen 
-    //misschien probleem omdat hij hier ook de webcam opzet en functies hier uitvoeren kan voor vertraging zorgen of ligt aan me eigen laptop (lol)
     randomNotifications();
-    checkGoodPose(); //start de check voor goede pose functie (kan dit maybe uitschakelen als default en in optie aan laten zetten)
-    randomTips(); //start de random notifications (kan dit maybe uitzetten als default)
+    checkGoodPose();
+    randomTips(); 
 }
 
+//simple check to ensure the program will run. Needed a simple function to use proper options for PoseNet. 
 function check() {
     console.log('check');
 }
 
+//if a pose gets detected, create an array with the keypoints and make it visible. this way we can check if a person is out of the screen or still visible.
 function showPoses(poses) {
-    //show pose x and y variables.
-    // console.log(poses);
     if (poses.length > 0) {
         pose = poses[0].pose;
         skeleton = poses[0].skeleton;
@@ -70,23 +68,18 @@ function showPoses(poses) {
     }
 }
 
-//dit zet de 'goede' pose van de gebruiker vast zodat er gekeken word of de persoon goed zit
+//creates a good starting pose which the program uses to check pose. 
 function displayStartPose() {
     startingD = d;
-    // console.log("starting D = " + startingD);
     document.getElementById("start").innerHTML = startingD;
 }
 
+//creates a bad pose which the programs uses to check pose. 
 //dit zet de 'bad' pose aan de positie waar je je niet in wilt bevinden
 function displayBadPose() {
     badD = d;
     // console.log("bad D = " + badD);
     document.getElementById("bad").innerHTML = badD;
-}
-
-function modelReady() {
-    //check if model is loaded in.
-    console.log('Loaded');
 }
 
 //function to show notification split into mute/unmuted can remove one if we choose to let users mute via System
@@ -104,7 +97,7 @@ function showNotificaton() {
                 this.close();
             }
         });
-        resetLeanCheck(); //gemaakt zodat gebruiker niet perse hoef te klikken om te 'resetten' maar dat het na x seconden gebeurt, zodat we advies blijven geven en geen applicatie worden die forced.
+        resetLeanCheck();
     } 
     else if (muteCheck == 'unmuted' && showPopup == 'true'){
         playSound('bing');
@@ -120,7 +113,7 @@ function showNotificaton() {
         });
         resetLeanCheck();
     }
-    else if (muteCheck == 'muted' && showPopup == 'false') //kijken wat we hiermee gaan doen maybe wel voor data registreren want geen geluid en popup is eigenlijk niks
+    else if (muteCheck == 'muted' && showPopup == 'false')
     {
         console.log("sound is muted and showPopup is false so nothing shows but it went of in the background!");
         resetLeanCheck();
@@ -132,8 +125,7 @@ function showNotificaton() {
     }
 }
 
-//random berichten die we pushen dit zijn test teksten en test timers we moeten nog kijken naar de frequentie van de notificaties
-//denk hierbij aan links en belangrijke 'break' reminders 
+//random push messages like breaks and motivation.
 function randomNotifications() {
     setTimeout(
         function() {
@@ -141,7 +133,7 @@ function randomNotifications() {
                 body: "Do not forget to do some stretches click here for a small routine",
                 icon: 'img/stretch.png',
                 onClick: function () {
-                    testHyperlink();
+                    openHyperlink();
                     this.close();
                 }
             });
@@ -159,16 +151,15 @@ function randomNotifications() {
                 });
             }, ((frequentTime * 2) * 60 * 1000)
         );
-        //in de laatste misschien de functie opnieuw oproepen voor een loop
-        // randomNotifications();
-
 }
 
-function testHyperlink() {
+//opens new tab with a youtube video to show stretch practices.
+function openHyperlink() {
     window.open("https://www.youtube.com/watch?v=6lJBZCRlFnI");
 }
 
 //functie om de leancheck die normaal word uitgevoerd door te klikken op popup te automatiseren dit gaat na 10sec terug
+//function to reset leancheck, which you could click on to reset. this way it's automated.
 function resetLeanCheck() {
     setTimeout(
     function() {
@@ -264,14 +255,14 @@ function testing_load(){
     goodPoseTime = localStorage.getItem("goodposetimer");
 }
 
-//functie om de tijd op te slaan wanneer een slechte pose word aangegeven dit word in een array gestopt
+//function to save time and put in an array. shows on the top right div. only used when a bad pose is detected.
 function recordBadPose() {
     var time = new Date();
-    var timeconverted = time.toUTCString(); //toLocaleTimeString voor alleen tijd
-    badpose_per_session.unshift(timeconverted); //unshift en geen push zodat nieuwste boven te zien is
+    var timeconverted = time.toUTCString();
+    badpose_per_session.unshift(timeconverted);
 }
 
-//print de array op het scherm (nieuwste komt boven)
+//prints the array from previously made function in the top right div.
 function printBadSession(){
     for (let index = 0; index < badpose_per_session.length; index++) {
         console.log(badpose_per_session[index]);
@@ -283,24 +274,22 @@ function printBadSession(){
             }
         text += "</ul>";
     document.getElementById("demo2").innerHTML = text;
-    //document.getElementById("demo3").innerHTML = badposeCounter_per_session;
 }
 
-//veranderd de 'houding is correct' van groen -> rood en de tekst
+//changes color when pose is bad. goes from green to red. changes text as well.
 function changeColorToBad() {
     document.getElementById("gwd-div-uhf8").style.backgroundColor = "red";
     document.getElementById("gwd-span-1rvu").innerHTML = "Your posture is wrong!";
 }
 
-//veranderd de 'houding is incorrect' van rood -> groen en de tekst
+//changes color when pose is good. goes from red to green. changes text as well.
 function changeColorToGood() {
     document.getElementById("gwd-div-uhf8").style.backgroundColor= 'rgb(' + 63 + ',' + 255 + ',' + 0 + ')';
     //document.getElementById("gwd-div-uhf8").style.backgroundColor = "lightgreen";
     document.getElementById("gwd-span-1rvu").innerHTML = "Your posture is correct! Good job :)";
 }
 
-//met deze functie vullen we de tips veld op het scherm met tips / motivatie
-//denk aan tips, motivatie die mensen zien als ze op de page zelf zijn niet perse belangrijke dingen
+//this function fills the bottom right div with tips and motivation. 
 function randomTips(){
     var textField = document.getElementById("tipsText");
     setTimeout(
@@ -327,6 +316,7 @@ function randomTips(){
 }
 
 //functie zodat om de x minuten word gecheckt of de gebruiker in die tijd een foute pose heeft gehad
+//function to check if the person has been sitting correctly for the past minute(s).
 function checkGoodPose(){
     setTimeout(
         function() {
@@ -335,6 +325,7 @@ function checkGoodPose(){
 }
 
 //functie om te kijken of de gebruiker een 'reward' krijgt of niet. 
+//function to reward the user for it's good pose.
 function rewardGoodPose(){
     if (reward_good_pose == 'true')
     {
@@ -361,7 +352,7 @@ function rewardGoodPose(){
     }
 }
 
-//functie om de gebruiker de frequente notificaties timer aan te passen
+//function to change the time between the random notifications. 
 function myFrequentTime() {
     var x = document.getElementById("myFrequentTime");
     frequentTime = Number(x.value);
@@ -369,19 +360,19 @@ function myFrequentTime() {
     randomNotifications();
 }
 
-//functie om de gebruiker de good pose detection timer aan te passsen 
+//function to change the time between the good pose notification.
 function myGoodPoseTime() {
     var x = document.getElementById("myGoodPoseTime");
     goodPoseTime = Number(x.value);
-    clearTimeout(checkGoodPose); //reset timer voor checkGoodPose zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    clearTimeout(checkGoodPose);
     checkGoodPose();
 }
 
-//functie om de gebruiker de good pose detection timer aan te passsen 
+//function to change the time between tips notification
 function myTipsTime() {
     var x = document.getElementById("myTipsTime");
     tipsTime = Number(x.value);
-    clearTimeout(randomTips); //reset timer voor tipsTime zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    clearTimeout(randomTips);
     randomTips();
 }
 
@@ -394,45 +385,37 @@ function playSound(filename){
     document.getElementById("sound").innerHTML='<audio autoplay="autoplay">' + mp3Source + oggSource + embedSource + '</audio>';
 }
 
+//draws the keypoints so the camera can manage the good poses and bad poses
 function draw() {
-    //draw both keypoints and the skeleton for testing purposes.
     drawKeyPoints();
 }
 
+//function to make the nose bigger, how closer the person is to the camera. 
 function drawKeyPoints() {
     image(video, 0, 0);
         
     try {
-        //trying to check distance eyes
         let eyeR = pose.rightEye;
         let eyeL = pose.leftEye;
         d = dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
-        
-        //fill with color red and create ellipse to show the keypoints
-        // fill(255,0,0);
+        if (d > startingD + (badD - startingD) && leanCheck == 0){
+            showNotificaton();
+            reward_good_pose = 'false';
 
-        //use d to check distance instead of fixed variable
-        // ellipse(pose.nose.x, pose.nose.y, d);
+            recordBadPose();
+            printBadSession();
+            badposeCounter_per_session += 1;
 
-        //if leaning forward && no notification is showing then show notification 
-        //otherwise the notification will loop and crash the browser/application
-            if (d > startingD + (badD - startingD) && leanCheck == 0){
-                showNotificaton();
-                // console.log("bad D");
-                reward_good_pose = 'false';
-
-                recordBadPose();
-                printBadSession();
-                badposeCounter_per_session += 1;
-
-                changeColorToBad();
-            } 
+            changeColorToBad();
+        } 
     }
     catch (err) {
-       //console.log("No pose found!");
+       console.log("No pose found.");
     }
 }
 
+//function gives a notification where you can click on if the person is still there. 
+//will trigger after 10 seconds by going to the break page if notification is not clicked.
 function personNotFound() {
     if (used == false) {
         console.log("Nobody is behind the camera.");
@@ -451,6 +434,7 @@ function personNotFound() {
     }    
 }
 
+//checks if the nose is still visible on the camera. if not found, calls personNotFound to create a notification.
 function detectOutOfCanvas(){
     const nose = pose.nose;
     const leftShoulder = pose.leftShoulder;
