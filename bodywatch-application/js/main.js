@@ -38,8 +38,10 @@ let used = false;
 function setup() {
     //create camera window and webcam usage.
     var test = createCanvas(640, 480);
+
     test.parent('canvasPosition'); //dit koppelt het aan een div in html 
-    test.position(400,120); //relocate canvas
+    test.position(0,0); //relocate canvas
+
     video = createCapture(VIDEO);
     // video.size(width, height);
     poseNet = ml5.poseNet(video, options, check);
