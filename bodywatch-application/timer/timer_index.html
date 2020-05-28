@@ -3,25 +3,71 @@
   <head>
     <meta charset="utf-8">
     <title>
-      Bodywatch - Breakroom
+      Bodywatch Break room
     </title>
     <link rel="shortcut icon" type="image/png" href="../favicon.ico">
     <link href="stopwatch.css" rel="stylesheet">
+    <script src="image.js"></script>
     <script src="stopwatch.js"></script>
     <script src="../js/main.js"></script>
   </head>
-  <body>
-    <div id="stopwatch">
-      <!-- [DISPLAY TIMER] -->
-      <div id="sw-time">00:00:00</div>
-      <!-- [RESET BUTTON] -->
-      <input type="button" value="Reset" id="sw-rst" disabled/>
-      <!-- [START/STOP BUTTON] -->
-      <input type="button" value="Start" id="sw-go" disabled/>
+  <body class="htmlNoPages" onload="sw.start();">
+    <div>
+      <div class="gwd-div-hsq5">
+        <img src="../img/Text_logo_full.png" class="gwd-img-jszj">
+      </div>
     </div>
-    <br>
-    <a href="../index2.html">
-        <button type="button">Done taking a break! Take me back :)</button>
-     </a>
+
+    <div class="box">
+      <div class="boxInBoxL">
+        <p>testleft</p>
+      </div>
+
+      <div class="boxInBox">
+        <div style="float:left; width:60%; margin:10px;">
+          <img class="gif" src="../img/forward_stretch.gif">
+          <ol>
+            <li>Clasp your hands in front of you and lower your head in line with your arms.</li>
+            <li>Press forward and hold for 10 to 30 seconds.</li>
+          </ol>
+        </div>
+        
+        <div style="float:left; width:60%; margin:10px;">
+          <img class="gif" src="../img/overhead_reach.gif">
+          <ol>
+            <li>Extend each arm overhead.</li>
+            <li>Reach to the opposite side.</li>
+            <li>Hold for 10 to 30 seconds.</li>
+            <li>Repeat on the other side.</li>
+          </ol>
+        </div>
+        
+        <img class="gif" src="../img/shoulder_stretch.gif">
+        <img class="gif" src="../img/triceps_stretches.gif">
+        <img class="gif" src="../img/upper_body_arm_stretch.gif">
+        <img class="gif" src="../img/torso_stretch.gif">
+      </div>
+
+      <div class="boxInBox">
+        <p>testleft</p>
+      </div>
+    </div>
+
+    <div class="boxFoot">
+      <div id="stopwatch">
+        <!-- [DISPLAY TIMER] -->
+        <div id="sw-time">00:00:00</div>
+        <!-- [RESET BUTTON] -->
+        <input type="button" value="Reset" id="sw-rst" disabled/>
+        <!-- [START/STOP BUTTON] -->
+        <input type="button" value="Start" id="sw-go" disabled/>
+      </div>
+      <br>
+      <a href="../index2.html">
+          <button>Done taking a break, take me back!</button>
+       </a>
+    </div>
+
+    
   </body>
 </html>
