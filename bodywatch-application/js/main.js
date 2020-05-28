@@ -183,7 +183,7 @@ function randomNotifications() {
                 body: "Do not forget to do some stretches click here for a small routine",
                 icon: 'img/stretch.png',
                 onClick: function () {
-                    testHyperlink();
+                    window.open("https://www.youtube.com/watch?v=BdfTuxdfIE8");
                     this.close();
                 }
             });
@@ -209,7 +209,7 @@ function randomNotifications() {
                 body: "Do not forget to do some stretches click here for a small routine",
                 icon: 'img/stretch.png',
                 onClick: function () {
-                    testHyperlink();
+                    window.open("https://www.youtube.com/watch?v=R86jwm1HIvk");
                     this.close();
                 }
             });
@@ -235,7 +235,7 @@ function randomNotifications() {
                 body: "Do not forget to do some stretches click here for a small routine",
                 icon: 'img/stretch.png',
                 onClick: function () {
-                    testHyperlink();
+                    window.open("https://www.youtube.com/watch?v=6fnLKyRJsrs");
                     this.close();
                 }
             });
@@ -261,7 +261,7 @@ function randomNotifications() {
                     body: "Do not forget to do some stretches click here for a small routine",
                     icon: 'img/stretch.png',
                     onClick: function () {
-                        testHyperlink();
+                        window.open("https://www.youtube.com/watch?v=FRNtLrMf-1A");
                         this.close();
                     }
                 });
@@ -287,7 +287,7 @@ function randomNotifications() {
                         body: "Do not forget to do some stretches click here for a small routine",
                         icon: 'img/stretch.png',
                         onClick: function () {
-                            testHyperlink();
+                            window.open("https://www.youtube.com/watch?v=9N6ZQz-CV44");
                             this.close();
                         }
                     });
