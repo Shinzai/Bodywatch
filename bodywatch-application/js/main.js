@@ -35,8 +35,21 @@ let badpose_per_session = [];
 let badposeCounter_per_session = 0; //deze session storage maken
 let pausesTaken = 0; //deze session storage maken
 let goodPoseCounter_per_session = 0; //deze session storage maken
-//let timeStarted - timeEnded = timeSpentSession
+let startTimeVar; //storage
+let endTimeVar; //storage
+let spendTimeVar; //storage
 let used = false;
+
+let diffHrs; //storage
+let diffMins; //storage
+
+var lS_badPosesCounter; //storage
+var lS_goodPosesCounter; //storage
+var lS_pauseTakenCounter; //storage
+var lS_diffHrs; //storage
+var lS_diffMins; //storage
+
+let startimeChecker = 0; //storage
 
 function setup() {
     //create camera window and webcam usage.
@@ -55,10 +68,12 @@ function setup() {
     randomNotifications();
     checkGoodPose(); //start de check voor goede pose functie (kan dit maybe uitschakelen als default en in optie aan laten zetten)
     randomTips(); //start de random notifications (kan dit maybe uitzetten als default)
+    loadStatistics();
 }
 
 function check() {
     console.log('check');
+    startTime(); //gets start time when cam is started to calculate 'time spent'
 }
 
 function showPoses(poses) {
@@ -148,22 +163,176 @@ function randomNotifications() {
             });
         }, frequentTime * 60 * 1000); 
 
+    setTimeout(
+        function() {
+            Push.create('Time for a break!', {
+                body: "Click on this notification to take a break. " + (frequentTime * 2) + " minutes have passed.",
+                icon: 'img/breaktime.png',
+                onClick: function () {
+                    window.location.href = "./timer/timer_index.html"
+                    takePause();
+                    this.close();
+                }
+            });
+        }, ((frequentTime * 2) * 60 * 1000)
+    );
+
+    setTimeout(
+        function() {
+            Push.create("Good job!", {
+                body: "Do not forget to do some stretches click here for a small routine",
+                icon: 'img/stretch.png',
+                onClick: function () {
+                    testHyperlink();
+                    this.close();
+                }
+            });
+        }, (frequentTime * 3) * 60 * 1000); 
+
+    setTimeout(
+        function() {
+            Push.create('Time for a break!', {
+                body: "Click on this notification to take a break. " + (frequentTime * 4) + " minutes have passed.",
+                icon: 'img/breaktime.png',
+                onClick: function () {
+                    window.location.href = "./timer/timer_index.html"
+                    takePause();
+                    this.close();
+                }
+            });
+        }, ((frequentTime * 4) * 60 * 1000)
+    );
+
+    setTimeout(
+        function() {
+            Push.create("Good job!", {
+                body: "Do not forget to do some stretches click here for a small routine",
+                icon: 'img/stretch.png',
+                onClick: function () {
+                    testHyperlink();
+                    this.close();
+                }
+            });
+        }, (frequentTime * 5) * 60 * 1000); 
+
+    setTimeout(
+        function() {
+            Push.create('Time for a break!', {
+                body: "Click on this notification to take a break. " + (frequentTime * 6) + " minutes have passed.",
+                icon: 'img/breaktime.png',
+                onClick: function () {
+                    window.location.href = "./timer/timer_index.html"
+                    takePause();
+                    this.close();
+                }                   
+            });
+        }, ((frequentTime * 6) * 60 * 1000),
+    );
+
+    setTimeout(
+        function() {
+            Push.create("Good job!", {
+                body: "Do not forget to do some stretches click here for a small routine",
+                icon: 'img/stretch.png',
+                onClick: function () {
+                    testHyperlink();
+                    this.close();
+                }
+            });
+        }, (frequentTime * 7) * 60 * 1000); 
+
         setTimeout(
             function() {
                 Push.create('Time for a break!', {
-                    body: "Click on this notification to take a break. 45 minutes have passed.",
+                    body: "Click on this notification to take a break. " + (frequentTime * 8) + " minutes have passed.",
                     icon: 'img/breaktime.png',
                     onClick: function () {
                         window.location.href = "./timer/timer_index.html"
-                        pausesTaken =+ 1;
+                        takePause();
+                        this.close();
+                    }                   
+                });
+            }, ((frequentTime * 8) * 60 * 1000),
+        );
+
+        setTimeout(
+            function() {
+                Push.create("Good job!", {
+                    body: "Do not forget to do some stretches click here for a small routine",
+                    icon: 'img/stretch.png',
+                    onClick: function () {
+                        testHyperlink();
                         this.close();
                     }
                 });
-            }, ((frequentTime * 2) * 60 * 1000)
-        );
-        //in de laatste misschien de functie opnieuw oproepen voor een loop
-        // randomNotifications();
+            }, (frequentTime * 9) * 60 * 1000); 
+    
+            setTimeout(
+                function() {
+                    Push.create('Time for a break!', {
+                        body: "Click on this notification to take a break. " + (frequentTime * 10) + " minutes have passed.",
+                        icon: 'img/breaktime.png',
+                        onClick: function () {
+                            window.location.href = "./timer/timer_index.html"
+                            takePause();
+                            this.close();
+                        }                   
+                    });
+                }, ((frequentTime * 10) * 60 * 1000),
+            );
 
+            setTimeout(
+                function() {
+                    Push.create("Good job!", {
+                        body: "Do not forget to do some stretches click here for a small routine",
+                        icon: 'img/stretch.png',
+                        onClick: function () {
+                            testHyperlink();
+                            this.close();
+                        }
+                    });
+                }, (frequentTime * 11) * 60 * 1000); 
+        
+                setTimeout(
+                    function() {
+                        Push.create('Time for a break!', {
+                            body: "Click on this notification to take a break. " + (frequentTime * 12) + " minutes have passed.",
+                            icon: 'img/breaktime.png',
+                            onClick: function () {
+                                window.location.href = "./timer/timer_index.html"
+                                takePause();
+                                this.close();
+                            }                   
+                        });
+                    }, ((frequentTime * 12) * 60 * 1000),
+                );
+        
+                setTimeout(
+                    function() {
+                        Push.create("Good job!", {
+                            body: "Do not forget to do some stretches click here for a small routine",
+                            icon: 'img/stretch.png',
+                            onClick: function () {
+                                testHyperlink();
+                                this.close();
+                            }
+                        });
+                    }, (frequentTime * 13) * 60 * 1000); 
+            
+                    setTimeout(
+                        function() {
+                            Push.create('Time for a break!', {
+                                body: "Click on this notification to take a break. " + (frequentTime * 14) + " minutes have passed.",
+                                icon: 'img/breaktime.png',
+                                onClick: function () {
+                                    window.location.href = "./timer/timer_index.html"
+                                    takePause();
+                                    this.close();
+                                }                   
+                            });
+                            randomNotifications(); //loop anders gaat maar 1x, deze moet in de laatste dus als je meer toevoegt deze hier weg halen en bij laatste zetten
+                        }, ((frequentTime * 14) * 60 * 1000),
+                    );
 }
 
 function testHyperlink() {
@@ -176,7 +345,7 @@ function resetLeanCheck() {
     function() {
         leanCheck = 0;
         changeColorToGood();
-    }, 20000);
+    }, 15000);
 }
 
 //function to mute/unmute sound can remove if we want people to just mute via System
@@ -303,24 +472,102 @@ function changeColorToGood() {
 
         //DIT MOET IK NOG STORAGE MAKEN 
         function showStatistics() {
-            document.getElementById("badPoses").innerHTML = badposeCounter_per_session;
-            document.getElementById("goodPoses").innerHTML = goodPoseCounter_per_session;
-            document.getElementById("amountBreaks").innerHTML = pausesTaken;
-            document.getElementById("timeWorked").innerHTML = 324234;
+            document.getElementById("badPoses").innerHTML = lS_badPosesCounter;
+            document.getElementById("goodPoses").innerHTML = lS_goodPosesCounter;
+            document.getElementById("amountBreaks").innerHTML = lS_pauseTakenCounter;
+            document.getElementById("timeWorked").innerHTML = lS_diffHrs + "h : " + lS_diffMins + "m";    
         }
 
-        function pauseTesting(){
-            pausesTaken =+ 1;
-            console.log(pausesTaken);
-            console.log("hallo");
+        function displayStatistics(){
+            loadLocalStats();
+            setTimeout(
+                function() {
+                    showStatistics();
+                }, 2200); 
+        }
+
+        function takePause(){
+            pausesTaken += 1;
+            sessionStorage.setItem("pauseTaken", pausesTaken);
+            collectStatistics();
         }
 
         function collectStatistics()
         {
-            localStorage.setItem("badPoseCounter", badposeCounter_per_session);
-            var testing = localStorage.getItem("badPoseCounter")
-            console.log(testing);
+            sessionStorage.setItem("badPoses", badposeCounter_per_session);
+            sessionStorage.setItem("goodPoses", goodPoseCounter_per_session);
+            sessionStorage.setItem("startTime", startTimeVar);
+            sessionStorage.setItem("startimeChecker", startimeChecker);
+            console.log("collected statistics")
         }
+
+        function loadStatistics()
+        {
+            badposeCounter_per_session = Number(sessionStorage.getItem("badPoses"));
+            goodPoseCounter_per_session = Number(sessionStorage.getItem("goodPoses"));
+            pausesTaken = Number(sessionStorage.getItem("pauseTaken"));
+            startTimeVar = Number(sessionStorage.getItem("startTime"));
+            startimeChecker = Number(sessionStorage.getItem("startimeChecker"));
+            console.log("loaded statistics")
+        }
+
+        function loadEndPage()
+        {
+            endTime();
+            calculateSpendTime();
+            saveLocalStats();
+            location.href = "./endpage/index.html";
+        }
+
+        function saveLocalStats()
+        {
+            localStorage.setItem("lS_badPose", badposeCounter_per_session);
+            localStorage.setItem("lS_goodPose", goodPoseCounter_per_session);
+            localStorage.setItem("lS_pauseTaken", pausesTaken);
+            localStorage.setItem("lS_diffHrs", diffHrs);
+            localStorage.setItem("lS_diffMins", diffMins);
+        }
+
+        function loadLocalStats()
+        {
+            lS_badPosesCounter = Number(localStorage.getItem("lS_badPose"));
+            lS_goodPosesCounter = Number(localStorage.getItem("lS_goodPose"));
+            lS_pauseTakenCounter = Number(localStorage.getItem("lS_pauseTaken"));
+            lS_diffHrs = Number(localStorage.getItem("lS_diffHrs"));
+            lS_diffMins = Number(localStorage.getItem("lS_diffMins"));
+        }
+
+        function startTime()
+        {
+            if (startimeChecker == 0){
+                startTimeVar = Date.now();
+                startimeChecker = 1;
+            }
+            else if (startimeChecker > 0)
+            {
+                console.log("boe");
+            }
+            //sessionStorage.setItem("startTime", startTimeVar); 
+        }
+
+        function endTime() //deze moet uitgevoerd worden als gebruiker 'stopt' met de applicatie en statistics wilt zien 
+        {
+            startTimeVar = Number(sessionStorage.getItem("startTime"));
+            endTimeVar = Date.now();
+        }
+
+        function calculateSpendTime()
+        {
+            var diffMs = (endTimeVar - startTimeVar);
+            var diffDays = Math.floor(diffMs / 86400000); // days
+            diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+            diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+            sessionStorage.setItem("diffHrs", diffHrs);
+            sessionStorage.setItem("diffMins", diffMins);
+            console.log(diffDays + " days, " + diffHrs + " hours, " + diffMins + " minutes spend using this application");
+        }
+
+
         //DIT MOET IK NOG STORAGE MAKEN 
 
 //met deze functie vullen we de tips veld op het scherm met tips / motivatie
@@ -330,39 +577,38 @@ function randomTips(){
     setTimeout(
         function() {
             textField.innerHTML = "Please take short brakes, dont work for more than two hours at the time"
-        }, tipsTime * 60 * 1000); //staat nu op een halve minuut moeten voor echte productie tijd nog aanpassen misschien settings optie voor gebruiker?? net als frequente notificatie
+        }, tipsTime * 60 * 1000); 
 
     setTimeout(
         function() {
             textField.innerHTML = "Remember to stretch!"
-        }, (tipsTime * 2) * 60 * 1000); //staat op 1 minuut
+        }, (tipsTime * 2) * 60 * 1000); 
     
     setTimeout(
         function() {
             textField.innerHTML = "This software is not a medical expert, please see one if needed"
-        }, (tipsTime * 3) * 60 * 1000); //staat op anderhalf minuut
+        }, (tipsTime * 3) * 60 * 1000); 
 
     setTimeout(
         function() {
             textField.innerHTML = "Stress can cause backpains! Remember to take a break once in a while!"
-        }, (tipsTime * 4) * 60 * 1000); //staat op anderhalf minuut
+        }, (tipsTime * 4) * 60 * 1000);
 
     setTimeout(
         function() {
             textField.innerHTML = "Stuck on something, try to take a little break to clear your mind."
-        }, (tipsTime * 5) * 60 * 1000); //staat op anderhalf minuut
+        }, (tipsTime * 5) * 60 * 1000); 
 
     setTimeout(
         function() {
             textField.innerHTML = "Did you know that a good pose, also improves your productivity."
-        }, (tipsTime * 6) * 60 * 1000); //staat op anderhalf minuut
+        }, (tipsTime * 6) * 60 * 1000); 
 
-        setTimeout(
-            function() {
-                textField.innerHTML = "A break helps your focus"
-            }, (tipsTime * 7) * 60 * 1000); //staat op anderhalf minuut
-            //misschien bij de laatste call de functie opnieuw aanroepen voor een loop
-            // randomTips();
+    setTimeout(
+        function() {
+            textField.innerHTML = "A break helps your focus"
+            randomTips(); //loop anders gaat maar 1x, deze moet in de laatste dus als je meer toevoegt deze hier weg halen en bij laatste zetten
+        }, (tipsTime * 7) * 60 * 1000); 
 }
 
 //functie zodat om de x minuten word gecheckt of de gebruiker in die tijd een foute pose heeft gehad
@@ -384,6 +630,8 @@ function rewardGoodPose(){
                 this.close();
             }
         });
+        goodPoseCounter_per_session += 1;
+        clearTimeout(checkGoodPose);
         checkGoodPose();
     }
     else {
@@ -413,6 +661,7 @@ function myGoodPoseTime() {
     var x = document.getElementById("myGoodPoseTime");
     goodPoseTime = Number(x.value);
     clearTimeout(checkGoodPose); //reset timer voor checkGoodPose zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    clearTimeout(rewardGoodPose);
     checkGoodPose();
 }
 
@@ -457,7 +706,6 @@ function drawKeyPoints() {
         //otherwise the notification will loop and crash the browser/application
             if (d > startingD + (badD - startingD) && leanCheck == 0){
                 showNotificaton();
-                // console.log("bad D");
                 reward_good_pose = 'false';
 
                 recordBadPose();
@@ -474,7 +722,11 @@ function drawKeyPoints() {
 function personNotFound() {
     if (used == false) {
         console.log("Nobody is behind the camera.");
-        let timeout = setTimeout(function() { window.location.href ="./timer/timer_index.html" }, 10000);
+        let timeout = setTimeout(
+                        function() { 
+                            takePause();
+                            window.location.href ="./timer/timer_index.html" },
+                             10000);
 
         Push.create('Are you still here?', {
             body: "Click on this notification if you are here.",
