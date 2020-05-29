@@ -32,24 +32,21 @@ let frequentTime = 15;
 let goodPoseTime = 30;
 let tipsTime = 10;
 let badpose_per_session = [];
-let badposeCounter_per_session = 0; //deze session storage maken
-let pausesTaken = 0; //deze session storage maken
-let goodPoseCounter_per_session = 0; //deze session storage maken
-let startTimeVar; //storage
-let endTimeVar; //storage
-let spendTimeVar; //storage
+let badposeCounter_per_session = 0;
+let pausesTaken = 0;
+let goodPoseCounter_per_session = 0;
+let startTimeVar;
+let endTimeVar;
+let spendTimeVar;
 let used = false;
-
-let diffHrs; //storage
-let diffMins; //storage
-
-var lS_badPosesCounter; //storage
-var lS_goodPosesCounter; //storage
-var lS_pauseTakenCounter; //storage
-var lS_diffHrs; //storage
-var lS_diffMins; //storage
-
-let startimeChecker = 0; //storage
+let diffHrs; 
+let diffMins;
+var lS_badPosesCounter; 
+var lS_goodPosesCounter; 
+var lS_pauseTakenCounter;
+var lS_diffHrs;
+var lS_diffMins;
+let startimeChecker = 0;
 
 function setup() {
     //create camera window and webcam usage.
@@ -74,7 +71,7 @@ function setup() {
 //simple check to ensure the program will run. Needed a simple function to use proper options for PoseNet. 
 function check() {
     console.log('check');
-    startTime(); //gets start time when cam is started to calculate 'time spent'
+    startTime(); 
 }
 
 //if a pose gets detected, create an array with the keypoints and make it visible. this way we can check if a person is out of the screen or still visible.
@@ -93,10 +90,8 @@ function displayStartPose() {
 }
 
 //creates a bad pose which the programs uses to check pose. 
-//dit zet de 'bad' pose aan de positie waar je je niet in wilt bevinden
 function displayBadPose() {
     badD = d;
-    // console.log("bad D = " + badD);
     document.getElementById("bad").innerHTML = badD;
 }
 
@@ -255,7 +250,6 @@ function openHyperlink() {
     window.open("https://www.youtube.com/watch?v=6lJBZCRlFnI");
 }
 
-//functie om de leancheck die normaal word uitgevoerd door te klikken op popup te automatiseren dit gaat na 10sec terug
 //function to reset leancheck, which you could click on to reset. this way it's automated.
 function resetLeanCheck() {
     setTimeout(
@@ -382,109 +376,104 @@ function changeColorToBad() {
 //changes color when pose is good. goes from red to green. changes text as well.
 function changeColorToGood() {
     document.getElementById("gwd-div-uhf8").style.backgroundColor= 'rgb(' + 63 + ',' + 255 + ',' + 0 + ')';
-    //document.getElementById("gwd-div-uhf8").style.backgroundColor = "lightgreen";
     document.getElementById("gwd-span-1rvu").innerHTML = "Your posture is correct! Good job :)";
 }
 
-        //DIT MOET IK NOG STORAGE MAKEN 
-        function showStatistics() {
-            document.getElementById("badPoses").innerHTML = lS_badPosesCounter;
-            document.getElementById("goodPoses").innerHTML = lS_goodPosesCounter;
-            document.getElementById("amountBreaks").innerHTML = lS_pauseTakenCounter;
-            document.getElementById("timeWorked").innerHTML = lS_diffHrs + "h : " + lS_diffMins + "m";    
-        }
+function showStatistics() {
+    document.getElementById("badPoses").innerHTML = lS_badPosesCounter;
+    document.getElementById("goodPoses").innerHTML = lS_goodPosesCounter;
+    document.getElementById("amountBreaks").innerHTML = lS_pauseTakenCounter;
+    document.getElementById("timeWorked").innerHTML = lS_diffHrs + "h : " + lS_diffMins + "m";    
+}
 
-        function displayStatistics(){
-            loadLocalStats();
-            setTimeout(
-                function() {
-                    showStatistics();
-                }, 2200); 
-        }
+function displayStatistics(){
+    loadLocalStats();
+    setTimeout(
+        function() {
+            showStatistics();
+        }, 2200); 
+}
 
-        function takePause(){
-            pausesTaken += 1;
-            sessionStorage.setItem("pauseTaken", pausesTaken);
-            collectStatistics();
-        }
+function takePause(){
+    pausesTaken += 1;
+    sessionStorage.setItem("pauseTaken", pausesTaken);
+    collectStatistics();
+}
 
-        function collectStatistics()
-        {
-            sessionStorage.setItem("badPoses", badposeCounter_per_session);
-            sessionStorage.setItem("goodPoses", goodPoseCounter_per_session);
-            sessionStorage.setItem("startTime", startTimeVar);
-            sessionStorage.setItem("startimeChecker", startimeChecker);
-            console.log("collected statistics")
-        }
+function collectStatistics()
+{
+    sessionStorage.setItem("badPoses", badposeCounter_per_session);
+    sessionStorage.setItem("goodPoses", goodPoseCounter_per_session);
+    sessionStorage.setItem("startTime", startTimeVar);
+    sessionStorage.setItem("startimeChecker", startimeChecker);
+    console.log("collected statistics")
+}
 
-        function loadStatistics()
-        {
-            badposeCounter_per_session = Number(sessionStorage.getItem("badPoses"));
-            goodPoseCounter_per_session = Number(sessionStorage.getItem("goodPoses"));
-            pausesTaken = Number(sessionStorage.getItem("pauseTaken"));
-            startTimeVar = Number(sessionStorage.getItem("startTime"));
-            startimeChecker = Number(sessionStorage.getItem("startimeChecker"));
-            console.log("loaded statistics")
-        }
+function loadStatistics()
+{
+    badposeCounter_per_session = Number(sessionStorage.getItem("badPoses"));
+    goodPoseCounter_per_session = Number(sessionStorage.getItem("goodPoses"));
+    pausesTaken = Number(sessionStorage.getItem("pauseTaken"));
+    startTimeVar = Number(sessionStorage.getItem("startTime"));
+    startimeChecker = Number(sessionStorage.getItem("startimeChecker"));
+    console.log("loaded statistics")
+}
 
-        function loadEndPage()
-        {
-            endTime();
-            calculateSpendTime();
-            saveLocalStats();
-            location.href = "./endpage/index.html";
-        }
+function loadEndPage()
+{
+    endTime();
+    calculateSpendTime();
+    saveLocalStats();
+    location.href = "./endpage/index.html";
+}
 
-        function saveLocalStats()
-        {
-            localStorage.setItem("lS_badPose", badposeCounter_per_session);
-            localStorage.setItem("lS_goodPose", goodPoseCounter_per_session);
-            localStorage.setItem("lS_pauseTaken", pausesTaken);
-            localStorage.setItem("lS_diffHrs", diffHrs);
-            localStorage.setItem("lS_diffMins", diffMins);
-        }
+function saveLocalStats()
+{
+    localStorage.setItem("lS_badPose", badposeCounter_per_session);
+    localStorage.setItem("lS_goodPose", goodPoseCounter_per_session);
+    localStorage.setItem("lS_pauseTaken", pausesTaken);
+    localStorage.setItem("lS_diffHrs", diffHrs);
+    localStorage.setItem("lS_diffMins", diffMins);
+}
 
-        function loadLocalStats()
-        {
-            lS_badPosesCounter = Number(localStorage.getItem("lS_badPose"));
-            lS_goodPosesCounter = Number(localStorage.getItem("lS_goodPose"));
-            lS_pauseTakenCounter = Number(localStorage.getItem("lS_pauseTaken"));
-            lS_diffHrs = Number(localStorage.getItem("lS_diffHrs"));
-            lS_diffMins = Number(localStorage.getItem("lS_diffMins"));
-        }
+function loadLocalStats()
+{
+    lS_badPosesCounter = Number(localStorage.getItem("lS_badPose"));
+    lS_goodPosesCounter = Number(localStorage.getItem("lS_goodPose"));
+    lS_pauseTakenCounter = Number(localStorage.getItem("lS_pauseTaken"));
+    lS_diffHrs = Number(localStorage.getItem("lS_diffHrs"));
+    lS_diffMins = Number(localStorage.getItem("lS_diffMins"));
+}
 
-        function startTime()
-        {
-            if (startimeChecker == 0){
-                startTimeVar = Date.now();
-                startimeChecker = 1;
-            }
-            else if (startimeChecker > 0)
-            {
-                console.log("boe");
-            }
-            //sessionStorage.setItem("startTime", startTimeVar); 
-        }
+function startTime()
+{
+    if (startimeChecker == 0){
+        startTimeVar = Date.now();
+        startimeChecker = 1;
+    }
+    else if (startimeChecker > 0)
+    {
+        console.log("boe");
+    }
+    //sessionStorage.setItem("startTime", startTimeVar); 
+}
 
-        function endTime() //deze moet uitgevoerd worden als gebruiker 'stopt' met de applicatie en statistics wilt zien 
-        {
-            startTimeVar = Number(sessionStorage.getItem("startTime"));
-            endTimeVar = Date.now();
-        }
+function endTime() //deze moet uitgevoerd worden als gebruiker 'stopt' met de applicatie en statistics wilt zien 
+{
+    startTimeVar = Number(sessionStorage.getItem("startTime"));
+    endTimeVar = Date.now();
+}
 
-        function calculateSpendTime()
-        {
-            var diffMs = (endTimeVar - startTimeVar);
-            var diffDays = Math.floor(diffMs / 86400000); // days
-            diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
-            diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-            sessionStorage.setItem("diffHrs", diffHrs);
-            sessionStorage.setItem("diffMins", diffMins);
-            console.log(diffDays + " days, " + diffHrs + " hours, " + diffMins + " minutes spend using this application");
-        }
-
-
-        //DIT MOET IK NOG STORAGE MAKEN 
+function calculateSpendTime()
+{
+    var diffMs = (endTimeVar - startTimeVar);
+    var diffDays = Math.floor(diffMs / 86400000); // days
+    diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+    diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+    sessionStorage.setItem("diffHrs", diffHrs);
+    sessionStorage.setItem("diffMins", diffMins);
+    console.log(diffDays + " days, " + diffHrs + " hours, " + diffMins + " minutes spend using this application");
+}
 
 //met deze functie vullen we de tips veld op het scherm met tips / motivatie
 //denk aan tips, motivatie die mensen zien als ze op de page zelf zijn niet perse belangrijke dingen
