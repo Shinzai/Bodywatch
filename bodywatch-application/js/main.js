@@ -294,18 +294,9 @@ function showMenu() {
     }
 }
 
-function showTutorial() {
-    var x = document.getElementById("myTutorial");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    }
-    else {
-        x.style.display = "none";
-    }
-}
-
-//functie om alle 'field' bij settings op te slaan zodat ze voor volgende gebruik kunnen worden gebruikt.
+//function to create a save function for the settings users can change. 
 function testing_save() { 
+    //here we tell where the values can be found that we want to save (where to look for in the HTML code. for example a tag with id "myMute")
     ////sound 
     var sound = document.getElementById("myMute").innerHTML;
     ////notification
@@ -319,7 +310,8 @@ function testing_save() {
     /// badPose
     var badpositie = document.getElementById("bad").innerHTML;
 
-    //Set
+    //Set, here we create a localStorage with a ("key", "value") pair. For the settings we choose localStorage instead of sesssionStorage
+    //Because we want to be able to load the settings even after the browser is closed and opened again.
     localStorage.setItem("sound", sound);
     localStorage.setItem("notification", notification);
     localStorage.setItem("frequenttimer", frequenttimer);
@@ -328,9 +320,9 @@ function testing_save() {
     localStorage.setItem("badpositie", badpositie);
 } 
 
-//functie om alle bewaarde values te loaden
+//function to load the saved values at the corresponding HTML tag
 function testing_load(){
-     //Retrieve
+     //Retrieve the values visually 
     document.getElementById("myMute").innerHTML = localStorage.getItem("sound");
     document.getElementById("myPopup").innerHTML = localStorage.getItem("notification");
     document.getElementById("myFrequentTime").value = localStorage.getItem("frequenttimer");
@@ -338,6 +330,7 @@ function testing_load(){
     document.getElementById("start").innerHTML = localStorage.getItem("startpositie");
     document.getElementById("bad").innerHTML = localStorage.getItem("badpositie");
 
+    //Put the saved values at the corresponding variable
     muteCheck = localStorage.getItem("sound");
     showPopup = localStorage.getItem("notification");
     badD = Number(localStorage.getItem("badpositie"));
@@ -379,6 +372,7 @@ function changeColorToGood() {
     document.getElementById("gwd-span-1rvu").innerHTML = "Your posture is correct! Good job :)";
 }
 
+//function to show the statistics like the save/load function for the settings we tell where to display it in the HTML code
 function showStatistics() {
     document.getElementById("badPoses").innerHTML = lS_badPosesCounter;
     document.getElementById("goodPoses").innerHTML = lS_goodPosesCounter;
@@ -386,6 +380,7 @@ function showStatistics() {
     document.getElementById("timeWorked").innerHTML = lS_diffHrs + "h : " + lS_diffMins + "m";    
 }
 
+//function to load the saved files and show the statistic at the 'statistic page' with a little delay.
 function displayStatistics(){
     loadLocalStats();
     setTimeout(
@@ -394,12 +389,16 @@ function displayStatistics(){
         }, 2200); 
 }
 
+//function to make it easier then putting the whole sequence everytime we want to take a pause
+//it adds 1 to the pauseTaken for the statistics and updates the sessionStorage with the ("key", "value") pair for pauses 
 function takePause(){
     pausesTaken += 1;
     sessionStorage.setItem("pauseTaken", pausesTaken);
     collectStatistics();
 }
 
+//function to collect the values of the statistics we want to collect. 
+//Chose for sessionStorage instead of localStorage because we just want to save the statistics for one session each time
 function collectStatistics()
 {
     sessionStorage.setItem("badPoses", badposeCounter_per_session);
@@ -409,6 +408,7 @@ function collectStatistics()
     console.log("collected statistics")
 }
 
+//put the saved values from the ("key", "value") pair to the corresponding variable
 function loadStatistics()
 {
     badposeCounter_per_session = Number(sessionStorage.getItem("badPoses"));
@@ -419,6 +419,9 @@ function loadStatistics()
     console.log("loaded statistics")
 }
 
+//function that is called when you are 'done' and want to see the statistics
+//it creates a timestamp for when you are 'done' and calculates the time between the start and the end so you get the statistic 'spendTime'
+//and it saves all the stats one more time and pushes you to the statistics page
 function loadEndPage()
 {
     endTime();
@@ -427,6 +430,8 @@ function loadEndPage()
     location.href = "./endpage/index.html";
 }
 
+//creates a temporary localStorage of the statistics because there were problems saving / loading sessionStorage when we were testing locally 
+//because the domain was 'different' according to the browser you don't share the same 'session'
 function saveLocalStats()
 {
     localStorage.setItem("lS_badPose", badposeCounter_per_session);
@@ -436,6 +441,8 @@ function saveLocalStats()
     localStorage.setItem("lS_diffMins", diffMins);
 }
 
+//creates a temporary localStorage of the statistics because there were problems saving / loading sessionStorage when we were testing locally 
+//because the domain was 'different' according to the browser you don't share the same 'session'
 function loadLocalStats()
 {
     lS_badPosesCounter = Number(localStorage.getItem("lS_badPose"));
@@ -445,6 +452,8 @@ function loadLocalStats()
     lS_diffMins = Number(localStorage.getItem("lS_diffMins"));
 }
 
+//creates a startTime timestamp when the cam is first started
+//after which it creates a check so you do not get a new startTime timestamp everytime you load the cam again for example when going/coming to and from the pause page
 function startTime()
 {
     if (startimeChecker == 0){
@@ -458,12 +467,14 @@ function startTime()
     //sessionStorage.setItem("startTime", startTimeVar); 
 }
 
-function endTime() //deze moet uitgevoerd worden als gebruiker 'stopt' met de applicatie en statistics wilt zien 
+//creates a endTime timestamp to calculate endTime - startTime = spendTime
+function endTime() 
 {
     startTimeVar = Number(sessionStorage.getItem("startTime"));
     endTimeVar = Date.now();
 }
 
+//calculates endTime - startTime to create the statistic spendTime
 function calculateSpendTime()
 {
     var diffMs = (endTimeVar - startTimeVar);
@@ -475,8 +486,8 @@ function calculateSpendTime()
     console.log(diffDays + " days, " + diffHrs + " hours, " + diffMins + " minutes spend using this application");
 }
 
-//met deze functie vullen we de tips veld op het scherm met tips / motivatie
-//denk aan tips, motivatie die mensen zien als ze op de page zelf zijn niet perse belangrijke dingen
+//this function rotates random tips for the user within the browser so not as pop up notifications
+//here we want to show 'less' important notifications to motivate the user
 function randomTips(){
     var textField = document.getElementById("tipsText");
     setTimeout(
@@ -512,11 +523,10 @@ function randomTips(){
     setTimeout(
         function() {
             textField.innerHTML = "A break helps your focus"
-            randomTips(); //loop anders gaat maar 1x, deze moet in de laatste dus als je meer toevoegt deze hier weg halen en bij laatste zetten
+            randomTips(); 
         }, (tipsTime * 7) * 60 * 1000); 
 }
 
-//functie zodat om de x minuten word gecheckt of de gebruiker in die tijd een foute pose heeft gehad
 //function to check if the person has been sitting correctly for the past minute(s).
 function checkGoodPose(){
     setTimeout(
@@ -525,8 +535,7 @@ function checkGoodPose(){
         }, goodPoseTime * 60 * 1000); 
 }
 
-//functie om te kijken of de gebruiker een 'reward' krijgt of niet. 
-//function to reward the user for it's good pose.
+//function to reward the user for keeping it's good pose for x minutes.
 function rewardGoodPose(){
     if (reward_good_pose == 'true')
     {
@@ -555,31 +564,30 @@ function rewardGoodPose(){
     }
 }
 
-//function to change the time between the random notifications. 
+//function to let the user change the time between the random notifications. 
 function myFrequentTime() {
     var x = document.getElementById("myFrequentTime");
     frequentTime = Number(x.value);
-    clearTimeout(randomNotifications); //reset timer voor randomNotifications zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    clearTimeout(randomNotifications); 
     randomNotifications();
 }
 
-//function to change the time between the good pose notification.
+//function to let the user change the time between the good pose notification.
 function myGoodPoseTime() {
     var x = document.getElementById("myGoodPoseTime");
     goodPoseTime = Number(x.value);
-    clearTimeout(checkGoodPose); //reset timer voor checkGoodPose zodat de functie nog een keer word uitgevoerd maar dan met de nieuwe 'timer'
+    clearTimeout(checkGoodPose); 
     clearTimeout(rewardGoodPose);
     checkGoodPose();
 }
 
-//function to change the time between tips notification
+//function to let the user change the time between tips notification
 function myTipsTime() {
     var x = document.getElementById("myTipsTime");
     tipsTime = Number(x.value);
     clearTimeout(randomTips);
     randomTips();
 }
-
 
 //plays a sound when called
 function playSound(filename){
