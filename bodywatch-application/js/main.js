@@ -48,6 +48,7 @@ var lS_diffHrs;
 var lS_diffMins;
 let startimeChecker = 0;
 
+//1
 function setup() {
     //create camera window and webcam usage.
     var canvas = createCanvas(640, 480);
@@ -69,12 +70,14 @@ function setup() {
 }
 
 //simple check to ensure the program will run. Needed a simple function to use proper options for PoseNet. 
+//3
 function check() {
     console.log('check');
     startTime(); 
 }
 
 //if a pose gets detected, create an array with the keypoints and make it visible. this way we can check if a person is out of the screen or still visible.
+//2
 function showPoses(poses) {
     if (poses.length > 0) {
         pose = poses[0].pose;
@@ -84,18 +87,21 @@ function showPoses(poses) {
 }
 
 //creates a good starting pose which the program uses to check pose. 
+//4
 function displayStartPose() {
     startingD = d;
     document.getElementById("start").innerHTML = startingD;
 }
 
 //creates a bad pose which the programs uses to check pose. 
+//5
 function displayBadPose() {
     badD = d;
     document.getElementById("bad").innerHTML = badD;
 }
 
 //function to show notification split into mute/unmuted can remove one if we choose to let users mute via System
+//6
 function showNotificaton() {
     //leancheck is set to 1 to notify the rest there is a notification showing so it will not spam notifications and crash the application
     leanCheck = 1;
@@ -139,6 +145,7 @@ function showNotificaton() {
 }
 
 //random push messages like breaks and motivation.
+//7
 function randomNotifications() {
     setTimeout(
         function() {
@@ -246,11 +253,13 @@ function randomNotifications() {
 }
 
 //opens new tab with a youtube video to show stretch practices.
+//8
 function openHyperlink() {
     window.open("https://www.youtube.com/watch?v=6lJBZCRlFnI");
 }
 
 //function to reset leancheck, which you could click on to reset. this way it's automated.
+//9
 function resetLeanCheck() {
     setTimeout(
     function() {
@@ -260,6 +269,7 @@ function resetLeanCheck() {
 }
 
 //function to mute/unmute sound can remove if we want people to just mute via System
+//10
 function muteSwitch() {
     var x = document.getElementById("myMute");
     if (x.innerHTML === "unmuted") {
@@ -272,6 +282,7 @@ function muteSwitch() {
 }
 
 //function to mute/unmute sound can remove if we want people to just mute via System
+//11
 function popupSwitch() {
     var x = document.getElementById("myPopup");
     if (x.innerHTML === "true") {
@@ -284,6 +295,7 @@ function popupSwitch() {
 }
 
 //shows or hides menu so the screen will not get full with buttons
+//12
 function showMenu() {
     var x = document.getElementById("myMenu");
     if (x.style.display === "none") {
@@ -295,6 +307,7 @@ function showMenu() {
 }
 
 //function to create a save function for the settings users can change. 
+//72
 function testing_save() { 
     //here we tell where the values can be found that we want to save (where to look for in the HTML code. for example a tag with id "myMute")
     ////sound 
@@ -321,6 +334,7 @@ function testing_save() {
 } 
 
 //function to load the saved values at the corresponding HTML tag
+//73
 function testing_load(){
      //Retrieve the values visually 
     document.getElementById("myMute").innerHTML = localStorage.getItem("sound");
@@ -340,6 +354,7 @@ function testing_load(){
 }
 
 //function to save time and put in an array. shows on the top right div. only used when a bad pose is detected.
+//74
 function recordBadPose() {
     var time = new Date();
     var timeconverted = time.toUTCString();
@@ -347,6 +362,7 @@ function recordBadPose() {
 }
 
 //prints the array from previously made function in the top right div.
+//75
 function printBadSession(){
     for (let index = 0; index < badpose_per_session.length; index++) {
         //console.log(badpose_per_session[index]);
@@ -361,18 +377,21 @@ function printBadSession(){
 }
 
 //changes color when pose is bad. goes from green to red. changes text as well.
+//76
 function changeColorToBad() {
     document.getElementById("gwd-div-uhf8").style.backgroundColor = "red";
     document.getElementById("gwd-span-1rvu").innerHTML = "Your posture is wrong!";
 }
 
 //changes color when pose is good. goes from red to green. changes text as well.
+//77
 function changeColorToGood() {
     document.getElementById("gwd-div-uhf8").style.backgroundColor= 'rgb(' + 63 + ',' + 255 + ',' + 0 + ')';
     document.getElementById("gwd-span-1rvu").innerHTML = "Your posture is correct! Good job :)";
 }
 
 //function to show the statistics like the save/load function for the settings we tell where to display it in the HTML code
+//78
 function showStatistics() {
     document.getElementById("badPoses").innerHTML = lS_badPosesCounter;
     document.getElementById("goodPoses").innerHTML = lS_goodPosesCounter;
@@ -381,6 +400,7 @@ function showStatistics() {
 }
 
 //function to load the saved files and show the statistic at the 'statistic page' with a little delay.
+//79
 function displayStatistics(){
     loadLocalStats();
     setTimeout(
@@ -391,6 +411,7 @@ function displayStatistics(){
 
 //function to make it easier then putting the whole sequence everytime we want to take a pause
 //it adds 1 to the pauseTaken for the statistics and updates the sessionStorage with the ("key", "value") pair for pauses 
+//80
 function takePause(){
     pausesTaken += 1;
     sessionStorage.setItem("pauseTaken", pausesTaken);
@@ -399,6 +420,7 @@ function takePause(){
 
 //function to collect the values of the statistics we want to collect. 
 //Chose for sessionStorage instead of localStorage because we just want to save the statistics for one session each time
+//81
 function collectStatistics()
 {
     sessionStorage.setItem("badPoses", badposeCounter_per_session);
@@ -409,6 +431,7 @@ function collectStatistics()
 }
 
 //put the saved values from the ("key", "value") pair to the corresponding variable
+//82
 function loadStatistics()
 {
     badposeCounter_per_session = Number(sessionStorage.getItem("badPoses"));
@@ -422,6 +445,7 @@ function loadStatistics()
 //function that is called when you are 'done' and want to see the statistics
 //it creates a timestamp for when you are 'done' and calculates the time between the start and the end so you get the statistic 'spendTime'
 //and it saves all the stats one more time and pushes you to the statistics page
+//83
 function loadEndPage()
 {
     endTime();
@@ -432,6 +456,7 @@ function loadEndPage()
 
 //creates a temporary localStorage of the statistics because there were problems saving / loading sessionStorage when we were testing locally 
 //because the domain was 'different' according to the browser you don't share the same 'session'
+//84
 function saveLocalStats()
 {
     localStorage.setItem("lS_badPose", badposeCounter_per_session);
@@ -443,6 +468,7 @@ function saveLocalStats()
 
 //creates a temporary localStorage of the statistics because there were problems saving / loading sessionStorage when we were testing locally 
 //because the domain was 'different' according to the browser you don't share the same 'session'
+//85
 function loadLocalStats()
 {
     lS_badPosesCounter = Number(localStorage.getItem("lS_badPose"));
@@ -454,6 +480,7 @@ function loadLocalStats()
 
 //creates a startTime timestamp when the cam is first started
 //after which it creates a check so you do not get a new startTime timestamp everytime you load the cam again for example when going/coming to and from the pause page
+//86
 function startTime()
 {
     if (startimeChecker == 0){
@@ -468,6 +495,7 @@ function startTime()
 }
 
 //creates a endTime timestamp to calculate endTime - startTime = spendTime
+//87
 function endTime() 
 {
     startTimeVar = Number(sessionStorage.getItem("startTime"));
@@ -475,6 +503,7 @@ function endTime()
 }
 
 //calculates endTime - startTime to create the statistic spendTime
+//88
 function calculateSpendTime()
 {
     var diffMs = (endTimeVar - startTimeVar);
@@ -488,6 +517,7 @@ function calculateSpendTime()
 
 //this function rotates random tips for the user within the browser so not as pop up notifications
 //here we want to show 'less' important notifications to motivate the user
+//89
 function randomTips(){
     var textField = document.getElementById("tipsText");
     setTimeout(
@@ -528,6 +558,7 @@ function randomTips(){
 }
 
 //function to check if the person has been sitting correctly for the past minute(s).
+//90
 function checkGoodPose(){
     setTimeout(
         function() {
@@ -536,6 +567,7 @@ function checkGoodPose(){
 }
 
 //function to reward the user for keeping it's good pose for x minutes.
+//91
 function rewardGoodPose(){
     if (reward_good_pose == 'true')
     {
@@ -565,6 +597,7 @@ function rewardGoodPose(){
 }
 
 //function to let the user change the time between the random notifications. 
+//92
 function myFrequentTime() {
     var x = document.getElementById("myFrequentTime");
     frequentTime = Number(x.value);
@@ -573,6 +606,7 @@ function myFrequentTime() {
 }
 
 //function to let the user change the time between the good pose notification.
+//93
 function myGoodPoseTime() {
     var x = document.getElementById("myGoodPoseTime");
     goodPoseTime = Number(x.value);
@@ -582,6 +616,7 @@ function myGoodPoseTime() {
 }
 
 //function to let the user change the time between tips notification
+//94
 function myTipsTime() {
     var x = document.getElementById("myTipsTime");
     tipsTime = Number(x.value);
@@ -590,6 +625,7 @@ function myTipsTime() {
 }
 
 //plays a sound when called
+//95
 function playSound(filename){
     var mp3Source = '<source src="' + filename + '.mp3" type="audio/mpeg">';
     var oggSource = '<source src="' + filename + '.ogg" type="audio/ogg">';
@@ -603,6 +639,7 @@ function draw() {
 }
 
 //function to make the nose bigger, how closer the person is to the camera. 
+//96
 function drawKeyPoints() {
     image(video, 0, 0);
         
@@ -610,6 +647,7 @@ function drawKeyPoints() {
         let eyeR = pose.rightEye;
         let eyeL = pose.leftEye;
         d = dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
+        //97
         if (d > startingD + (badD - startingD) && leanCheck == 0){
             showNotificaton();
             reward_good_pose = 'false';
@@ -627,6 +665,7 @@ function drawKeyPoints() {
 
 //function gives a notification where you can click on if the person is still there. 
 //will trigger after 10 seconds by going to the break page if notification is not clicked.
+//98
 function personNotFound() {
     if (used == false) {
         console.log("Nobody is behind the camera.");
@@ -650,6 +689,7 @@ function personNotFound() {
 }
 
 //checks if the nose is still visible on the camera. if not found, calls personNotFound to create a notification.
+//99
 function detectOutOfCanvas(){
     const nose = pose.nose;
     const leftShoulder = pose.leftShoulder;
