@@ -673,7 +673,7 @@ function drawKeyPoints() {
         distanceleft = dist(eyeL.x, shoulderL.x, eyeL.y, shoulderL.y);
         distancenoseleft = dist(nose.x, shoulderL.x, nose.y, shoulderL.y);
         distancenoseright = dist(nose.x, shoulderR.x, nose.y, shoulderR.y);
-        if (distanceright > distanceleft || distanceleft > distanceright){
+        if (distanceright > startingD + (badD - startingD) && leanCheck == 0){
             showNotificaton();
             reward_good_pose = 'false';
 
@@ -686,7 +686,7 @@ function drawKeyPoints() {
     catch (err) {
        console.log("Nothing wrong going on.");
     }
-    
+    // || distanceleft > distanceright || distancenoseleft > distancenoseright || distancenoseright > distancenoseleft 
     
 }
 
