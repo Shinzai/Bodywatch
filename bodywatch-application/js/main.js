@@ -692,9 +692,6 @@ function personNotFound() {
 //99
 function detectOutOfCanvas(){
     const nose = pose.nose;
-    const leftShoulder = pose.leftShoulder;
-    const rightShoulder = pose.rightShoulder;
-
     if (nose && nose.x && nose.y){
         if (nose.x < 0 || nose.x >= 640){
             personNotFound();
