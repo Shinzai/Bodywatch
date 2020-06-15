@@ -681,7 +681,7 @@ function newDrawKeyPoints() {
     distancenoseleft = dist(nose.x, shoulderL.x, nose.y, shoulderL.y);
     distancenoseright = dist(nose.x, shoulderR.x, nose.y, shoulderR.y);
     //measurement for the posture
-    if (distanceright > distanceleft) {
+    if (distanceright > distanceleft){
       showNotificaton();
       reward_good_pose = 'false';
 
