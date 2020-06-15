@@ -636,6 +636,7 @@ function playSound(filename){
 //draws the keypoints so the camera can manage the good poses and bad poses
 function draw() {
     drawKeyPoints();
+    newDrawKeyPoints();
 }
 
 //function to make the nose bigger, how closer the person is to the camera. 
@@ -662,6 +663,9 @@ function drawKeyPoints() {
        console.log("No pose found.");
     }
     
+}
+
+function newDrawKeyPoints(){
     try {
         //variables needed for the checks
         let eyeR = pose.rightEye;
@@ -673,7 +677,7 @@ function drawKeyPoints() {
         distanceleft = dist(eyeL.x, shoulderL.x, eyeL.y, shoulderL.y);
         distancenoseleft = dist(nose.x, shoulderL.x, nose.y, shoulderL.y);
         distancenoseright = dist(nose.x, shoulderR.x, nose.y, shoulderR.y);
-        if (distanceright > startingD + (badD - startingD) && leanCheck == 0){
+        if (distanceright > (distanceleft - 5) && leanCheck == 0){
             showNotificaton();
             reward_good_pose = 'false';
 
@@ -686,8 +690,7 @@ function drawKeyPoints() {
     catch (err) {
        console.log("Nothing wrong going on.");
     }
-    // || distanceleft > distanceright || distancenoseleft > distancenoseright || distancenoseright > distancenoseleft 
-    
+    // || distanceleft > distanceright || distancenoseleft > distancenoseright || distancenoseright > distancenoseleft
 }
 
 
