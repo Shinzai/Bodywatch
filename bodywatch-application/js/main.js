@@ -684,7 +684,7 @@ function drawKeyPoints() {
         }
     }
     catch (err) {
-       console.log("No pose found.");
+       console.log("Nothing wrong going on.");
     }
     
     
