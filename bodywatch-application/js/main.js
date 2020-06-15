@@ -661,7 +661,35 @@ function drawKeyPoints() {
     catch (err) {
        console.log("No pose found.");
     }
+    
+    try {
+        //variables needed for the checks
+        let eyeR = pose.rightEye;
+        let eyeL = pose.leftEye;
+        let shoulderR = pose.shoulderR;
+        let shoulderL = pose.shoulderL;
+        let nose = pose.nose;
+        distanceright = dist(eyeR.x, shoulderR.x, eyeR.y, shoulderR.y);
+        distanceleft = dist(eyeL.x, shoulderL.x, eyeL.y, shoulderL.y);
+        distancenoseleft = dist(nose.x, shoulderL.x, nose.y, shoulderL.y);
+        distancenoseright = dist(nose.x, shoulderR.x, nose.y, shoulderR.y);
+        if (distanceright > distanceleft || distanceleft > distanceright){
+            showNotificaton();
+            reward_good_pose = 'false';
+
+                recordBadPose();
+                printBadSession();
+                badposeCounter_per_session += 1;
+                changeColorToBad();
+        }
+    }
+    catch (err) {
+       console.log("No pose found.");
+    }
+    
+    
 }
+
 
 //function gives a notification where you can click on if the person is still there. 
 //will trigger after 10 seconds by going to the break page if notification is not clicked.
