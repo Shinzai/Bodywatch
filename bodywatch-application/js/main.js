@@ -681,6 +681,8 @@ function newDrawKeyPoints() {
         distanceleft = dist(eyeL.x, shoulderL.x, eyeL.y, shoulderL.y);
         distancenoseleft = dist(nose.x, shoulderL.x, nose.y, shoulderL.y);
         distancenoseright = dist(nose.x, shoulderR.x, nose.y, shoulderR.y);
+        console.log(distanceright);
+        console.log(distanceleft);
         //measurement for the posture
         if (distanceright > distanceleft){
             showNotificaton();
