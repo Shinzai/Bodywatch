@@ -670,30 +670,30 @@ function draw() {
 
 function newDrawKeyPoints() {
     image(video, 0, 0);
-  try {
+    try {
     //variables needed for the checks
-    let eyeR = pose.rightEye;
-    let eyeL = pose.leftEye;
-    let shoulderR = pose.shoulderR;
-    let shoulderL = pose.shoulderL;
-    let nose = pose.nose;
-    distanceright = dist(eyeR.x, shoulderR.x, eyeR.y, shoulderR.y);
-    distanceleft = dist(eyeL.x, shoulderL.x, eyeL.y, shoulderL.y);
-    distancenoseleft = dist(nose.x, shoulderL.x, nose.y, shoulderL.y);
-    distancenoseright = dist(nose.x, shoulderR.x, nose.y, shoulderR.y);
-    //measurement for the posture
-    if (distanceright > distanceleft){
-      showNotificaton();
-      reward_good_pose = 'false';
+        let eyeR = pose.rightEye;
+        let eyeL = pose.leftEye;
+        let shoulderR = pose.shoulderR;
+        let shoulderL = pose.shoulderL;
+        let nose = pose.nose;
+        distanceright = dist(eyeR.x, shoulderR.x, eyeR.y, shoulderR.y);
+        distanceleft = dist(eyeL.x, shoulderL.x, eyeL.y, shoulderL.y);
+        distancenoseleft = dist(nose.x, shoulderL.x, nose.y, shoulderL.y);
+        distancenoseright = dist(nose.x, shoulderR.x, nose.y, shoulderR.y);
+        //measurement for the posture
+        if (distanceright > distanceleft){
+            showNotificaton();
+            reward_good_pose = 'false';
 
-      recordBadPose();
-      printBadSession();
-      badposeCounter_per_session += 1;
-      changeColorToBad();
-    }
-  } catch (err) {
-    console.log('Nothing wrong going on.');
-  }
+            recordBadPose();
+            printBadSession();
+            badposeCounter_per_session += 1;
+            changeColorToBad();
+        }
+        } catch (err) {
+            console.log('Nothing wrong going on.');
+        }
   // || distanceleft > distanceright || distancenoseleft > distancenoseright || distancenoseright > distancenoseleft
 }
 
