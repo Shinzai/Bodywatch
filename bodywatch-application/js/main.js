@@ -677,8 +677,8 @@ function newDrawKeyPoints() {
         let shoulderR = pose.shoulderR;
         let shoulderL = pose.shoulderL;
         let nose = pose.nose;
-        distanceright = dist(eyeR.x, shoulderR.x, eyeR.y, shoulderR.y);
-        distanceleft = dist(eyeL.x, shoulderL.x, eyeL.y, shoulderL.y);
+        distanceright = dist(eyeR.x, eyeR.y, shoulderR.x, shoulderR.y);
+        distanceleft = dist(eyeL.x, eyeL.y, shoulderL.x, shoulderL.y);
         distancenoseleft = dist(nose.x, shoulderL.x, nose.y, shoulderL.y);
         distancenoseright = dist(nose.x, shoulderR.x, nose.y, shoulderR.y);
         console.log(distanceright);
