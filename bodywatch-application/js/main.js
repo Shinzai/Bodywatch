@@ -669,6 +669,7 @@ function draw() {
 }*/
 
 function newDrawKeyPoints() {
+    image(video, 0, 0);
   try {
     //variables needed for the checks
     let eyeR = pose.rightEye;
