@@ -674,8 +674,8 @@ function newDrawKeyPoints() {
     //variables needed for the checks
         let eyeR = pose.rightEye;
         let eyeL = pose.leftEye;
-        let shoulderR = pose.shoulderR;
-        let shoulderL = pose.shoulderL;
+        let shoulderR = pose.rightShoulder;
+        let shoulderL = pose.leftShoulder;
         let nose = pose.nose;
         distanceright = dist(eyeR.x, eyeR.y, shoulderR.x, shoulderR.y);
         distanceleft = dist(eyeL.x, eyeL.y, shoulderL.x, shoulderL.y);
