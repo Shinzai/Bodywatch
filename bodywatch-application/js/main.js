@@ -679,13 +679,13 @@ function newDrawKeyPoints() {
         let nose = pose.nose;
         distanceright = dist(eyeR.x, eyeR.y, shoulderR.x, shoulderR.y);
         distanceleft = dist(eyeL.x, eyeL.y, shoulderL.x, shoulderL.y);
-        distancenoseleft = dist(nose.x, shoulderL.x, nose.y, shoulderL.y);
-        distancenoseright = dist(nose.x, shoulderR.x, nose.y, shoulderR.y);
+        distancenoseleft = dist(nose.x, nose.y, shoulderL.x, shoulderL.y);
+        distancenoseright = dist(nose.x, nose.y, shoulderR.x, shoulderR.y);
         console.log(distanceright);
         console.log(distanceleft);
         showNotificaton();
         //measurement for the posture
-        if (distanceright > distanceleft){
+        if (distancenoseleft > distancenoseright || distancenoseright > distancenoseleft){
             showNotificaton();
             reward_good_pose = 'false';
             showNotificaton();;
