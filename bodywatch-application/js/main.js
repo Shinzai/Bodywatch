@@ -640,13 +640,13 @@ function playSound(filename) {
 
 //draws the keypoints so the camera can manage the good poses and bad poses
 function draw() {
-  drawKeyPoints();
+  //drawKeyPoints();
   newDrawKeyPoints();
 }
 
 //function to make the nose bigger, how closer the person is to the camera.
 //96
-function drawKeyPoints() {
+/*function drawKeyPoints() {
   image(video, 0, 0);
 
   try {
@@ -666,7 +666,7 @@ function drawKeyPoints() {
   } catch (err) {
     console.log('No pose found.');
   }
-}
+}*/
 
 function newDrawKeyPoints() {
   try {
