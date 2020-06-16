@@ -681,27 +681,21 @@ function newDrawKeyPoints() {
         distanceleft = dist(eyeL.x, eyeL.y, shoulderL.x, shoulderL.y);
         distancenoseleft = dist(nose.x, nose.y, shoulderL.x, shoulderL.y);
         distancenoseright = dist(nose.x, nose.y, shoulderR.x, shoulderR.y);
-<<<<<<< HEAD
         console.log(distancenoseleft);
         console.log(distancenoseright);
         //measurement for the wrong posture
-=======
         console.log(distanceright);
         console.log(distanceleft);
         showNotificaton();
         //measurement for the posture
->>>>>>> 6b93d1ed9fba02c915036e9c46526638aa7555f1
         if (distancenoseleft > distancenoseright || distancenoseright > distancenoseleft){
             showNotificaton();
             reward_good_pose = 'false';
-            showNotificaton();;
-
+            
             recordBadPose();
             printBadSession();
             badposeCounter_per_session += 1;
             changeColorToBad();
-            showNotificaton();;
-
         }
         //when there is no wrong posture detected it will catch an error and give back a string
         } catch (err) {
