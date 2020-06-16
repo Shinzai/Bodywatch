@@ -672,7 +672,6 @@ function newDrawKeyPoints() {
   image(video, 0, 0);
   try {
     //variables needed for the checks
-<<<<<<< HEAD
         let eyeR = pose.rightEye;
         let eyeL = pose.leftEye;
         let shoulderR = pose.rightShoulder;
@@ -696,34 +695,6 @@ function newDrawKeyPoints() {
         } catch (err) {
             console.log('Nothing wrong going on.');
         }
-=======
-    let eyeR = pose.rightEye;
-    let eyeL = pose.leftEye;
-    let shoulderR = pose.rightShoulder;
-    let shoulderL = pose.leftShoulder;
-    let nose = pose.nose;
-    distanceright = dist(eyeR.x, eyeR.y, shoulderR.x, shoulderR.y);
-    distanceleft = dist(eyeL.x, eyeL.y, shoulderL.x, shoulderL.y);
-    distancenoseleft = dist(nose.x, nose.y, shoulderL.x, shoulderL.y);
-    distancenoseright = dist(nose.x, nose.y, shoulderR.x, shoulderR.y);
-    //measurement for the posture
-    if (
-      distancenoseleft > distancenoseright ||
-      distancenoseright > distancenoseleft
-    ) {
-      showNotificaton();
-      reward_good_pose = 'false';
-
-      recordBadPose();
-      printBadSession();
-      badposeCounter_per_session += 1;
-      changeColorToBad();
-    }
-  } catch (err) {
-    console.log('Nothing wrong going on.');
-  }
-  // || distanceleft > distanceright || distancenoseleft > distancenoseright || distancenoseright > distancenoseleft
->>>>>>> 246480b4e40f39affc4b9935b2b78d385c12f1cb
 }
 
 //function gives a notification where you can click on if the person is still there.
