@@ -683,18 +683,18 @@ function newDrawKeyPoints() {
         distancenoseright = dist(nose.x, shoulderR.x, nose.y, shoulderR.y);
         console.log(distanceright);
         console.log(distanceleft);
-        console.log("this is working");
+        showNotificaton();
         //measurement for the posture
         if (distanceright > distanceleft){
             showNotificaton();
             reward_good_pose = 'false';
-            console.log("this is working too");
+            showNotificaton();;
 
             recordBadPose();
             printBadSession();
             badposeCounter_per_session += 1;
             changeColorToBad();
-            console.log("this is working three");
+            showNotificaton();;
 
         }
         } catch (err) {
