@@ -669,37 +669,35 @@ function draw() {
 }*/
 
 function newDrawKeyPoints() {
-    image(video, 0, 0);
-    try {
+  image(video, 0, 0);
+  try {
     //variables needed for the checks
-        let eyeR = pose.rightEye;
-        let eyeL = pose.leftEye;
-        let shoulderR = pose.rightShoulder;
-        let shoulderL = pose.leftShoulder;
-        let nose = pose.nose;
-        distanceright = dist(eyeR.x, eyeR.y, shoulderR.x, shoulderR.y);
-        distanceleft = dist(eyeL.x, eyeL.y, shoulderL.x, shoulderL.y);
-        distancenoseleft = dist(nose.x, nose.y, shoulderL.x, shoulderL.y);
-        distancenoseright = dist(nose.x, nose.y, shoulderR.x, shoulderR.y);
-        console.log(distancenoseleft);
-        console.log(distancenoseright);
-        //measurement for the wrong posture
-        console.log(distanceright);
-        console.log(distanceleft);
-        //measurement for the posture
-        if (distancenoseleft > distancenoseright || distancenoseright > distancenoseleft){
-            showNotificaton();
-            reward_good_pose = 'false';
-            
-            recordBadPose();
-            printBadSession();
-            badposeCounter_per_session += 1;
-            changeColorToBad();
-        }
-        //when there is no wrong posture detected it will catch an error and give back a string
-        } catch (err) {
-            console.log('Nothing wrong going on.');
-        }
+    let eyeR = pose.rightEye;
+    let eyeL = pose.leftEye;
+    let shoulderR = pose.rightShoulder;
+    let shoulderL = pose.leftShoulder;
+    let nose = pose.nose;
+    distanceright = dist(eyeR.x, eyeR.y, shoulderR.x, shoulderR.y);
+    distanceleft = dist(eyeL.x, eyeL.y, shoulderL.x, shoulderL.y);
+    distancenoseleft = dist(nose.x, nose.y, shoulderL.x, shoulderL.y);
+    distancenoseright = dist(nose.x, nose.y, shoulderR.x, shoulderR.y);
+    //measurement for the posture
+    if (
+      distancenoseleft > distancenoseright ||
+      distancenoseright > distancenoseleft
+    ) {
+      showNotificaton();
+      reward_good_pose = 'false';
+
+      recordBadPose();
+      printBadSession();
+      badposeCounter_per_session += 1;
+      changeColorToBad();
+    }
+  } catch (err) {
+    console.log('Nothing wrong going on.');
+  }
+  // || distanceleft > distanceright || distancenoseleft > distancenoseright || distancenoseright > distancenoseleft
 }
 
 //function gives a notification where you can click on if the person is still there.
