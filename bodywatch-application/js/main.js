@@ -686,7 +686,6 @@ function newDrawKeyPoints() {
         //measurement for the wrong posture
         console.log(distanceright);
         console.log(distanceleft);
-        showNotificaton();
         //measurement for the posture
         if (distancenoseleft > distancenoseright || distancenoseright > distancenoseleft){
             showNotificaton();
@@ -701,7 +700,6 @@ function newDrawKeyPoints() {
         } catch (err) {
             console.log('Nothing wrong going on.');
         }
-  // || distanceleft > distanceright || distancenoseleft > distancenoseright || distancenoseright > distancenoseleft
 }
 
 //function gives a notification where you can click on if the person is still there.
