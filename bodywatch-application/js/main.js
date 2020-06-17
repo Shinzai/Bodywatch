@@ -141,6 +141,44 @@ function showNotificaton() {
   }
 }
 
+function showNotificationLean(){
+    sideCheck = 1;
+  if (muteCheck == 'muted' && showPopup == 'true') {
+    Push.create('Watch your pose', {
+      body: 'You are leaning too much to the side',
+      icon: 'img/icon.png',
+      onClick: function () {
+        //puts sidecheck back to 0 to signal the notification is clicked and is ready for a new one when needed
+        sideCheck = 0;
+        changeColorToGood();
+        this.close();
+      },
+    });
+    resetSideCheck();
+  } else if (muteCheck == 'unmuted' && showPopup == 'true') {
+    playSound('bing');
+    Push.create('Watch your pose', {
+      body: 'You are leaning too much to the side',
+      icon: 'img/icon.png',
+      onClick: function () {
+        //puts sidecheck back to 0 to signal the notification is clicked and is ready for a new one when needed
+        sideCheck = 0;
+        changeColorToGood();
+        this.close();
+      },
+    });
+    resetSideCheck();
+  } else if (muteCheck == 'muted' && showPopup == 'false') {
+    console.log(
+      'sound is muted and showPopup is false so nothing shows but it went off in the background!'
+    );
+    resetSideCheck();
+  } else if (muteCheck == 'unmuted' && showPopup == 'false') {
+    playSound('bing');
+    resetSideCheck();
+  }
+}
+
 //random push messages like breaks and motivation.
 //7
 function randomNotifications() {
@@ -260,6 +298,13 @@ function openHyperlink() {
 function resetLeanCheck() {
   setTimeout(function () {
     leanCheck = 0;
+    changeColorToGood();
+  }, 15000);
+}
+
+function resetSideCheck() {
+  setTimeout(function () {
+    sideCheck = 0;
     changeColorToGood();
   }, 15000);
 }
@@ -682,8 +727,10 @@ function newDrawKeyPoints() {
         distancenoseleft = dist(nose.x, nose.y, shoulderL.x, shoulderL.y);
         distancenoseright = dist(nose.x, nose.y, shoulderR.x, shoulderR.y);
         //measurement for the wrong posture
-        if (distancenoseleft > distancenoseright || distancenoseright > distancenoseleft && leanCheck == 0){
-            showNotificaton();
+      console.log(distancenoseleft);
+      console.log(distancenoseright);
+        if (distancenoseleft > distancenoseright || distancenoseright > distancenoseleft && sideCheck == 0){
+            showNotificationLean();
             reward_good_pose = 'false';
             
             recordBadPose();
