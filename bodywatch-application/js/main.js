@@ -24,6 +24,7 @@ let d;
 let startingD;
 let badD;
 let leanCheck = 0;
+let sideCheck = 0;
 let muteCheck = 'unmuted';
 let showPopup = 'true';
 let step = 'starting_pose';
