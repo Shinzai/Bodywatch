@@ -728,9 +728,7 @@ function newDrawKeyPoints() {
         distancenoseleft = dist(nose.x, nose.y, shoulderL.x, shoulderL.y);
         distancenoseright = dist(nose.x, nose.y, shoulderR.x, shoulderR.y);
         //measurement for the wrong posture
-      console.log(distancenoseleft);
-      console.log(distancenoseright);
-        if (distancenoseleft > distancenoseright || distancenoseright > distancenoseleft && sideCheck == 0){
+        if (distancenoseleft > (distancenoseright + 25) || distancenoseright > (distancenoseleft + 25) && sideCheck == 0){
             showNotificationLean();
             reward_good_pose = 'false';
             
