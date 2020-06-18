@@ -728,7 +728,7 @@ function newDrawKeyPoints() {
     //measurement for the wrong posture
     if (
       distancenoseleft > distancenoseright + 35 ||
-      (distancenoseright > distancenoseleft + 35 && sideCheck == 0)
+      (distancenoseright > distancenoseleft + 35) && sideCheck == 0
     ) {
       showNotificationLean();
       reward_good_pose = 'false';
