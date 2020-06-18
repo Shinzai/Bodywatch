@@ -700,7 +700,7 @@ function drawKeyPoints() {
     let positionMiddleX = shoulderR.x + shoulderL.x / 2;
     let positionMiddleY = shoulderR.y + shoulderL.y / 2;
     let positionMiddle = [positionMiddleX, positionMiddleY];
-    if (positionMiddle[1] < nose.y * 3 && leanCheck == 0) {
+    if (positionMiddle[1] < nose.y * 2.7 && leanCheck == 0) {
       showNotification();
       reward_good_pose = 'false';
 
