@@ -684,24 +684,28 @@ function playSound(filename) {
     '</audio>';
 }
 
-//draws the keypoints so the camera can manage the good poses and bad poses
 function draw() {
-  //drawKeyPoints();
+  drawKeyPoints();
   newDrawKeyPoints();
 }
 
-//function to make the nose bigger, how closer the person is to the camera.
-//96
-/*function drawKeyPoints() {
-  image(video, 0, 0);
 
+function drawKeyPoints() {
+  image(video, 0, 0);
   try {
     let eyeR = pose.rightEye;
     let eyeL = pose.leftEye;
-    d = dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
-    //97
-    if (d > startingD + (badD - startingD) && leanCheck == 0) {
-      showNotificaton();
+    let shoulderR = pose.rightShoulder;
+    let shoulderL = pose.leftShoulder;
+    let nose = pose.nose;
+    let positionMiddle = shoulderR + shoulderL / 2;
+    distanceMiddleToNose = dist(positionMiddle.x, positionMiddle.y, nose.x, nose.y);
+    //d = dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
+    //if (d > startingD + (badD - startingD) && leanCheck == 0) {
+    console.log(nose);
+    console.log(positionMiddle);
+    if (positionMiddle < nose && leanCheck == 0){
+      showNotification();
       reward_good_pose = 'false';
 
       recordBadPose();
@@ -712,7 +716,7 @@ function draw() {
   } catch (err) {
     console.log('No pose found.');
   }
-}*/
+}
 
 function newDrawKeyPoints() {
   image(video, 0, 0);
@@ -723,13 +727,9 @@ function newDrawKeyPoints() {
         let shoulderR = pose.rightShoulder;
         let shoulderL = pose.leftShoulder;
         let nose = pose.nose;
-        distanceright = dist(eyeR.x, eyeR.y, shoulderR.x, shoulderR.y);
-        distanceleft = dist(eyeL.x, eyeL.y, shoulderL.x, shoulderL.y);
         distancenoseleft = dist(nose.x, nose.y, shoulderL.x, shoulderL.y);
         distancenoseright = dist(nose.x, nose.y, shoulderR.x, shoulderR.y);
         //measurement for the wrong posture
-        console.log(distancenoseleft);
-        console.log(distancenoseright);
         if (distancenoseleft > (distancenoseright + 35) || distancenoseright > (distancenoseleft + 35) && sideCheck == 0){
             showNotificationLean();
             reward_good_pose = 'false';
