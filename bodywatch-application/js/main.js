@@ -142,8 +142,8 @@ function showNotificaton() {
   }
 }
 
-function showNotificationLean(){
-    sideCheck = 1;
+function showNotificationLean() {
+  sideCheck = 1;
   if (muteCheck == 'muted' && showPopup == 'true') {
     Push.create('Watch your pose', {
       body: 'You are leaning too much to the side',
@@ -689,7 +689,6 @@ function draw() {
   newDrawKeyPoints();
 }
 
-
 function drawKeyPoints() {
   image(video, 0, 0);
   try {
@@ -698,13 +697,16 @@ function drawKeyPoints() {
     let shoulderR = pose.rightShoulder;
     let shoulderL = pose.leftShoulder;
     let nose = pose.nose;
-    let positionMiddle = shoulderR + shoulderL / 2;
-    distanceMiddleToNose = dist(positionMiddle.x, positionMiddle.y, nose.x, nose.y);
-    //d = dist(eyeR.x, eyeR.y, eyeL.x, eyeL.y);
-    //if (d > startingD + (badD - startingD) && leanCheck == 0) {
-    console.log(nose);
-    console.log(positionMiddle);
-    if (positionMiddle < nose && leanCheck == 0){
+    let positionMiddleX = shoulderR.x + shoulderL.x / 2;
+    let positionMiddleY = shoulderR.y + shoulderL.y / 2;
+    let positionMiddle = [positionMiddleX, positionMiddleY];
+    distanceMiddleToNose = dist(
+      positionMiddle.x,
+      positionMiddle.y,
+      nose.x,
+      nose.y
+    );
+    if (positionMiddle[1] < nose.y * 3 && leanCheck == 0) {
       showNotification();
       reward_good_pose = 'false';
 
@@ -722,27 +724,30 @@ function newDrawKeyPoints() {
   image(video, 0, 0);
   try {
     //variables needed for the checks
-        let eyeR = pose.rightEye;
-        let eyeL = pose.leftEye;
-        let shoulderR = pose.rightShoulder;
-        let shoulderL = pose.leftShoulder;
-        let nose = pose.nose;
-        distancenoseleft = dist(nose.x, nose.y, shoulderL.x, shoulderL.y);
-        distancenoseright = dist(nose.x, nose.y, shoulderR.x, shoulderR.y);
-        //measurement for the wrong posture
-        if (distancenoseleft > (distancenoseright + 35) || distancenoseright > (distancenoseleft + 35) && sideCheck == 0){
-            showNotificationLean();
-            reward_good_pose = 'false';
-            
-            recordBadPose();
-            printBadSession();
-            badposeCounter_per_session += 1;
-            changeColorToBad();
-        }
-        //when there is no wrong posture detected it will catch an error and give back a string
-        } catch (err) {
-            console.log('Nothing wrong going on.');
-        }
+    let eyeR = pose.rightEye;
+    let eyeL = pose.leftEye;
+    let shoulderR = pose.rightShoulder;
+    let shoulderL = pose.leftShoulder;
+    let nose = pose.nose;
+    distancenoseleft = dist(nose.x, nose.y, shoulderL.x, shoulderL.y);
+    distancenoseright = dist(nose.x, nose.y, shoulderR.x, shoulderR.y);
+    //measurement for the wrong posture
+    if (
+      distancenoseleft > distancenoseright + 35 ||
+      (distancenoseright > distancenoseleft + 35 && sideCheck == 0)
+    ) {
+      showNotificationLean();
+      reward_good_pose = 'false';
+
+      recordBadPose();
+      printBadSession();
+      badposeCounter_per_session += 1;
+      changeColorToBad();
+    }
+    //when there is no wrong posture detected it will catch an error and give back a string
+  } catch (err) {
+    console.log('Nothing wrong going on.');
+  }
 }
 
 //function gives a notification where you can click on if the person is still there.
