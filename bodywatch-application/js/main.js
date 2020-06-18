@@ -103,7 +103,7 @@ function displayBadPose() {
 
 //function to show notification split into mute/unmuted can remove one if we choose to let users mute via System
 //6
-function showNotificaton() {
+function showNotification() {
   //leancheck is set to 1 to notify the rest there is a notification showing so it will not spam notifications and crash the application
   leanCheck = 1;
   if (muteCheck == 'muted' && showPopup == 'true') {
@@ -700,12 +700,6 @@ function drawKeyPoints() {
     let positionMiddleX = shoulderR.x + shoulderL.x / 2;
     let positionMiddleY = shoulderR.y + shoulderL.y / 2;
     let positionMiddle = [positionMiddleX, positionMiddleY];
-    distanceMiddleToNose = dist(
-      positionMiddle.x,
-      positionMiddle.y,
-      nose.x,
-      nose.y
-    );
     if (positionMiddle[1] < nose.y * 3 && leanCheck == 0) {
       showNotification();
       reward_good_pose = 'false';
